@@ -462,22 +462,22 @@ int acender(int sequencia[], int tamanho)
   	delay(1000);
 }
 
-int intro1()
-{
-    lcd_1.setCursor(0, 0);
-    sprintf(buffer, "Observe a ordem das luzes");
-    lcd_1.print(buffer);
+// int intro1()
+// {
+//     lcd_1.setCursor(0, 0);
+//     sprintf(buffer, "Observe a ordem das luzes");
+//     lcd_1.print(buffer);
 
-    // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
-    for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
-    {
-        lcd_1.setCursor(16, 1);
-        lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
-		lcd_1.autoscroll();
-        delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
-    }
-    return 0;
-}
+//     // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
+//     for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
+//     {
+//         lcd_1.setCursor(16, 1);
+//         lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
+// 		lcd_1.autoscroll();
+//         delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
+//     }
+//     return 0;
+// }
 int fase1()
 {
 
