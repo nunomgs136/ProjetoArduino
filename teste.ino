@@ -102,11 +102,11 @@
 // Entradas
 int verde = 7;
 int vermelho = 6;
-int inicio = 10;
+int inicio = 2;
 int sim = 9;
 int nao = 8;
 int buzzer = 13;
-LiquidCrystal lcd_1(12, 11, 5, 4, 3, 2);
+LiquidCrystal lcd_1(12, 11, 5, 4, 3, 10);
 // Onde serão colocadas as palavras a serem exibidas no visor
 char buffer[50];
 // Variavel para o jogo ativar ou reiniciar: Começa em 0, clica 1 vez, começa o jogo, clica 2 vezes ou mais, reinicia.
