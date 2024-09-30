@@ -94,7 +94,7 @@
 #define REST 0
 
 // Função para resetar o Arduino
-#define RESET asm ("jmp (0x0000)")
+#define RESET asm("jmp (0x0000)")
 // "Volta no loop"
 
 #include <LiquidCrystal.h>
@@ -381,6 +381,7 @@ int gerador(int sequencia[])
             sequencia[i] = 1;
         }
     }
+    //lcd_1.clear();
     for (int i = 0; i < 10; i++)
     {
         Serial.println(sequencia[i]);
@@ -393,53 +394,118 @@ int responder(int resposta[])
     lcd_1.clear();
     int contador = 0;
     int i = 0;
-    int errado = 0;
-    int btnSim = digitalRead(sim);
-    int btnNao = digitalRead(nao);
 
     while (i <= 10)
     {
+        int btnInicio = digitalRead(inicio);
+        //Serial.println(btnInicio);
+        if (btnInicio == 0)
+        {
+            jogo++;
+        }
+        while (jogo > 1)
+        {
+            RESET;
+        }
+        int btnSim = digitalRead(sim);
+        int btnNao = digitalRead(nao);
         lcd_1.setCursor(0, 0);
         sprintf(buffer, "Sequencia: %d", contador);
         lcd_1.print(buffer);
+
         if (btnSim == 0)
         {
-            resposta[i] == 1;
+            resposta[i] = 0;
 
             digitalWrite(verde, HIGH);
             digitalWrite(vermelho, LOW);
-            compara(seq, resposta, i);
             i++;
-            break;
-        }
 
+            bool comp = compara(seq, res, i);
+            if (comp == false)
+            {
+                contador = 0;
+                lcd_1.clear();
+                lcd_1.setCursor(0, 1);
+                musica(3);
+                sprintf(buffer, "Errado!");
+                lcd_1.print(buffer);
+                lcd_1.setCursor(3, 1);
+                sprintf(buffer, "Reiniciando.");
+                i = 0;
+                digitalWrite(verde, LOW);
+                delay(1000);
+                lcd_1.clear();
+                intro1();
+                return 1;
+            }
+            else
+            {
+
+                lcd_1.setCursor(0, 1);
+
+                sprintf(buffer, "Correto!");
+                lcd_1.print(buffer);
+                contador++;
+                delay(500);
+                digitalWrite(verde, LOW);
+                delay(500);
+                lcd_1.clear();
+            }
+        }
         if (btnNao == 0)
         {
-            resposta[i] == 1;
+            resposta[i] = 1;
             digitalWrite(vermelho, HIGH);
             digitalWrite(verde, LOW);
-            compara(seq, resposta, i);
+            //Serial.println("NUM");
             i++;
-            break;
+
+            bool comp = compara(seq, res, i);
+            if (comp == false)
+            {
+                contador = 0;
+                lcd_1.clear();
+                lcd_1.setCursor(3, 0);
+                musica(3);
+                sprintf(buffer, "Errado!");
+                lcd_1.print(buffer);
+                lcd_1.setCursor(3, 1);
+                sprintf(buffer, "Reiniciando.");
+                lcd_1.print(buffer);
+                i = 0;
+                digitalWrite(vermelho, LOW);
+                delay(1000);
+                lcd_1.clear();
+                intro1();
+                return 1;
+            }
+            else
+            {
+                //lcd_1.clear();
+                lcd_1.setCursor(0, 1);
+
+                sprintf(buffer, "Correto!");
+                lcd_1.print(buffer);
+                contador++;
+                delay(500);
+                digitalWrite(vermelho, LOW);
+                delay(500);
+                lcd_1.clear();
+            }
         }
 
-        if (compara(seq, resposta, i) == 1)
+        if (i == 10)
         {
-            errado = 1;
-            lcd_1.clear();
-            lcd_1.setCursor(1, 0);
-            sprintf(buffer, "Errado! Reiniciando.");
-            lcd_1.print(buffer);
-            contador = 0;
-        }
-        else
-        {
-            lcd_1.setCursor(1, 6);
-            lcd_1.clear();
-            sprintf(buffer, "Correto!");
-            contador++;
+            break;
         }
     }
+    lcd_1.clear();
+    lcd_1.setCursor(0, 0);
+    musica(1);
+    sprintf(buffer, "Proxima fase!");
+    lcd_1.print(buffer);
+    return 0;
 }
 
 int acender(int sequencia[], int tamanho)
@@ -466,25 +532,25 @@ int acender(int sequencia[], int tamanho)
     delay(1000);
 }
 
-// int intro1()
-// {
-//     lcd_1.setCursor(0, 0);
-//     sprintf(buffer, "Observe a ordem das luzes");
-//     lcd_1.print(buffer);
+int intro1()
+{
+    lcd_1.setCursor(0, 0);
+    sprintf(buffer, "Observe a ordem das luzes");
+    lcd_1.print(buffer);
 
-//     // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
-//     for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
-//     {
-//         lcd_1.setCursor(16, 1);
-//         lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
-// 		lcd_1.autoscroll();
-//         delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
-//     }
-//     return 0;
-// }
+    // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
+    // for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
+    // {
+    //     lcd_1.setCursor(16, 1);
+    //     lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
+    // 	lcd_1.autoscroll();
+    //     delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
+    // }
+    return 0;
+}
+
 int fase1()
 {
-
     // Faz o texto andar para a esquerda
     //while (lcd_1.cursor() > 0) {
     //}
@@ -503,9 +569,7 @@ int fase1()
     gerador(seq);
     acender(seq, 10);
     lcd_1.setCursor(0, 0);
-
     delay(1000);
-
     responder(res);
     delay(1000);
     return 0;
@@ -537,7 +601,7 @@ int contador(int tempo)
             }
             // Perde
             else
-            {   
+            {
                 musica(4);
                 RESET;
             }
@@ -546,47 +610,62 @@ int contador(int tempo)
     return 0;
 }
 
-// Vão ser 5 perguntas aleatorias de SIM ou NÃO, 2 faceis, 2 médias e 1 dificil, além da pergunta final (padrão: "Você é um robô?"). 
-const char* facil[]{
-  "O Sol é uma estrela?", 
-  "A Lua é um satélite da Terra?",
-  "A Terra é redonda?", 
-  "Tomate é um vegetal?", 
-  "O Japão é um arquipélago?",
-  "Os morcegos são cegos?"
-};
+// Vão ser 5 perguntas aleatorias de SIM ou NÃO, 2 faceis, 2 médias e 1 dificil, além da pergunta final (padrão: "Você é um robô?").
 
-const char* res1[] = {
-  "s", "s", "s", "n", "s", "n"
-};
+// Perguntas faceis: 6
+const char *facil[]{
+    "O Sol é uma estrela?",
+    "A Lua é um satélite da Terra?",
+    "A Terra é redonda?",
+    "Tomate é um vegetal?",
+    "O Japão é um arquipélago?",
+    "Os morcegos são cegos?"};
 
-const char* medio[] = {
-  "As abelhas se comunicam dançando?", 
-  "Os golfinhos são mamíferos?", 
-  "O Youtube já quebrou?",
-  "A Guerra Fria ocorreu após a Segunda Guerra Mundial?", 
-  "A gravidade foi descoberta por Albert Einstein?"
-};
+const char *res1[] = {
+    "s", "s", "s", "n", "s", "n"};
 
-const char* res2[] = {
-  "s", "s", "s", "s", "n"
-};
+// Perguntas médias: 6
+const char *medio[] = {
+    "As abelhas se comunicam dançando?",
+    "Os golfinhos são mamíferos?",
+    "O Youtube já quebrou?",
+    "A Guerra Fria ocorreu após a Segunda Guerra Mundial?",
+    "A gravidade foi descoberta por Albert Einstein?",
+    "A teoria do Big Bang foi proposta por Stephen Hawking?"};
 
-const char* dificil[] = {
-  "A teoria da relatividade foi proposta por Isaac Newton?", 
-  "A primeira mulher a ganhar um prêmio Nobel foi Marie Curie?", 
-  "A teoria da evolução foi proposta por Charles Darwin?"
-};
+const char *res2[] = {
+    "s", "s", "s", "s", "n", "n"};
 
-const char* res3[] = {
-  "n", "s", "n"
-};
+// Perguntas dificeis: 3
+const char *dificil[] = {
+    "A teoria da relatividade foi proposta por Isaac Newton?",
+    "A primeira mulher a ganhar um prêmio Nobel foi Marie Curie?",
+    "A teoria da evolução foi proposta por Charles Darwin?"};
 
-char* resp = " ";
+const char *res3[] = {
+    "n", "s", "n"};
+
+char *resp = " ";
 
 int fase2()
 {
     return 0;
+}
+
+// Inicia ou reinicia o jogo
+void reinicia()
+{
+    lcd_1.clear();
+    if (jogo == 0)
+    {
+        jogo = 1;
+        //fase1();
+    }
+    else
+    {
+        lcd_1.print("Reiniciando...");
+        RESET;
+    }
 }
 
 // Aplicando uma vez
@@ -605,43 +684,45 @@ void setup()
     //tone(buzzer, 440, 1000); // Testando o buzzer
     //delay(1000);
     noTone(buzzer);
-    //delay(1000);
-    //musica(1);
-    //delay(200);
-    //musica(2);
-    //delay(200);
-    //musica(3);
-    //delay(200);
-    //musica(4);
-    //delay(200);
-    //musica(5);
-    //delay(200);
-    //musica(6);
-    //delay(200);
-    //intro1();
+    attachInterrupt(digitalPinToInterrupt(inicio), reinicia, RISING);
 }
 // Looping
 void loop()
 {
     int btnInicio = digitalRead(inicio);
-    Serial.println(btnInicio);
-    lcd_1.clear();
-    lcd_1.print("Pressione o");
-    lcd_1.setCursor(0, 1);
-    lcd_1.print("botao iniciar");
-    delay(500);
-    if (btnInicio == 0)
-    {
-        jogo++;
-    }
+    //Serial.println(btnInicio);
 
+    // lcd_1.clear();
+    //jogo = 1;
+    if (jogo == 0)
+    {
+        lcd_1.setCursor(0, 0);
+        lcd_1.print("   Bem-vindo.");
+        lcd_1.setCursor(0, 1);
+        lcd_1.print("  Pressione GO!");
+    }
     if (jogo == 1)
     {
+        lcd_1.clear();
         fase1();
     }
+    // lcd_1.print("Pressione o");
+    // lcd_1.setCursor(0, 1);
+    // lcd_1.print("botao iniciar");
+    //delay(600);
+    // if (btnInicio == 0)
+    // {
+    //     jogo++;
+    // }
+    //delay(200);
 
-    while (jogo > 1)
-    {
-        RESET;
-    }
+    //if (jogo == 1)
+    //{
+    //fase1();
+    //}
+
+    // while (jogo > 1)
+    // {
+    //     RESET;
+    // }
 }
