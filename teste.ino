@@ -578,13 +578,13 @@ int fase1()
 // A partir daqui, a função contador() será chamada para contar o tempo do jogo
 // Variavel para a contagem de tempo do jogo (Maior que 20 reinicia, em 15 toca a música de tempo esgotando)
 int seg = 0;
-int erro = 0;
+int chance = 1;
 
 // Verificar se não respondeu a tempo
 // Função contadora de tempo
-int contador(int tempo)
+int contador(int seg)
 {
-    for (int i = 0; i < tempo; i++)
+    for (int i = 0; i < seg; i++)
     {
         delay(1000);
         seg++;
@@ -595,8 +595,10 @@ int contador(int tempo)
         if (seg == 20)
         {
             // Pula
-            if (erro == 0)
+            if (chance == 1)
             {
+                // O limite de chances é 1
+                chance = 0;
                 musica(2);
             }
             // Perde
