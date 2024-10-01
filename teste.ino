@@ -624,24 +624,60 @@ int contador(int seg)
 
 // Vão ser 5 perguntas aleatorias de SIM ou NÃO, 2 faceis, 2 médias e 1 dificil, além da pergunta final (padrão: "Você é um robô?").
 
+// // Perguntas faceis: 6
+// const char *facil[]{
+//     "O Sol é uma estrela?",
+//     "A Lua é um satélite da Terra?",
+//     "A Terra é redonda?",
+//     "Tomate é um vegetal?",
+//     "O Japão é um arquipélago?",
+//     "Os morcegos são cegos?"};
+
+// const char *res1[] = {
+//     "s", "s", "s", "n", "s", "n"};
+
+// // Perguntas médias: 6
+// const char *medio[] = {
+//     "As abelhas se comunicam dançando?",
+//     "Os golfinhos são mamíferos?",
+//     "O Youtube já quebrou?",
+//     "A Guerra Fria ocorreu após a Segunda Guerra Mundial?",
+//     "A gravidade foi descoberta por Albert Einstein?",
+//     "A teoria do Big Bang foi proposta por Stephen Hawking?"};
+
+// const char *res2[] = {
+//     "s", "s", "s", "s", "n", "n"};
+
+// // Perguntas dificeis: 6
+// const char *dificil[] = {
+//     "A teoria da relatividade foi proposta por Isaac Newton?",
+//     "A primeira mulher a ganhar um prêmio Nobel foi Marie Curie?",
+//     "A teoria da evolução foi proposta por Charles Darwin?",
+//     "A primeira viagem ao espaço foi realizada por um astronauta americano?",
+//     "A Teoria da Relatividade foi proposta no século XIX?",
+//     "O deserto do Saara é o maior deserto do mundo?"};
+
+// const char *res3[] = {
+//     "n", "s", "n", "n", "n", "n"};
+
 // Perguntas faceis: 6
 const char *facil[]{
-    "O Sol é uma estrela?",
-    "A Lua é um satélite da Terra?",
-    "A Terra é redonda?",
-    "Tomate é um vegetal?",
-    "O Japão é um arquipélago?",
-    "Os morcegos são cegos?"};
+    "O Sol e uma estrela?",
+    "A Lua e um satelite da Terra?",
+    "A Terra e redonda?",
+    "Tomate e um vegetal?",
+    "O Japao e um arquipelago?",
+    "Os morcegos sao cegos?"};
 
 const char *res1[] = {
     "s", "s", "s", "n", "s", "n"};
 
-// Perguntas médias: 6
+// Perguntas medias: 6
 const char *medio[] = {
-    "As abelhas se comunicam dançando?",
-    "Os golfinhos são mamíferos?",
-    "O Youtube já quebrou?",
-    "A Guerra Fria ocorreu após a Segunda Guerra Mundial?",
+    "As abelhas se comunicam dancando?",
+    "Os golfinhos sao mamiferos?",
+    "O Youtube ja quebrou?",
+    "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
     "A gravidade foi descoberta por Albert Einstein?",
     "A teoria do Big Bang foi proposta por Stephen Hawking?"};
 
@@ -649,13 +685,13 @@ const char *res2[] = {
     "s", "s", "s", "s", "n", "n"};
 
 // Perguntas dificeis: 6
-const char *dificil[] = {
+const char *dificil[]{
     "A teoria da relatividade foi proposta por Isaac Newton?",
-    "A primeira mulher a ganhar um prêmio Nobel foi Marie Curie?",
-    "A teoria da evolução foi proposta por Charles Darwin?",
-    "A primeira viagem ao espaço foi realizada por um astronauta americano?",
-    "A Teoria da Relatividade foi proposta no século XIX?",
-    "O deserto do Saara é o maior deserto do mundo?"};
+    "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
+    "A teoria da evolucao foi proposta por Charles Darwin?",
+    "A primeira viagem ao espaco foi realizada por um astronauta americano?",
+    "A Teoria da Relatividade foi proposta no seculo XIX?",
+    "O deserto do Sahara e o maior deserto do mundo?"};
 
 const char *res3[] = {
     "n", "s", "n", "n", "n", "n"};
@@ -666,9 +702,9 @@ int intro2()
 {
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
-    lcd_1.print("Responda as");
+    lcd_1.print("   Responda as");
     lcd_1.setCursor(0, 1);
-    lcd_1.print("perguntas!");
+    lcd_1.print("    perguntas!");
     // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
     // for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
     // {
@@ -680,10 +716,147 @@ int intro2()
     return 0;
 }
 
+// int embaralhar(char* vetor[], int tamanho)
+// {
+//     // for (int i = 0; i < tamanho; i++)
+//     // {
+//     //     int r = random(tamanho);
+//     //     int temp = vetor[i];
+//     //     vetor[i] = vetor[r];
+//     //     vetor[r] = temp;
+//     // }
+
+//     for (int i = 0; i < tamanho; i++)
+//     {
+//         char r = random(tamanho);
+//         char temp = vetor[i];
+//         vetor[i] = vetor[r];
+//         vetor[r] = temp;
+//     }
+//     return 0;
+// }
+
+int embaralhar(const char *vetor[], int tamanho)
+{
+    for (int i = 0; i < tamanho; i++)
+    {
+        int r = random(tamanho);
+        const char *temp = vetor[i];
+        vetor[i] = vetor[r];
+        vetor[r] = temp;
+    }
+    return 0;
+}
+
+// int perguntas(char* perg[], char* res[], int tam)
+// {
+//     embaralhar(perg, tam);
+//     for (int i = 0; i < 2; i++)
+//     {
+//         lcd_1.clear();
+//         lcd_1.setCursor(0, 0);
+//         lcd_1.print(perg[i]);
+//         // A pergunta deve passar pro lado direito ao esquerdo <---- (scroll), depois sumir e aparecer o tempo.
+//         // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
+//         for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
+//         {
+//             lcd_1.setCursor(16, 1);
+//             lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
+//             lcd_1.autoscroll();
+//             delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
+//         }
+
+//         //lcd_1.setCursor(0, 1);
+//         //lcd_1.print("S ou N?");
+//         //delay(1000);
+
+//         // Resposta
+//         int btnSim = digitalRead(sim);
+//         int btnNao = digitalRead(nao);
+//         if (btnSim == 0)
+//         {
+//             resp = "s";
+//         }
+//         if (btnNao == 0)
+//         {
+//             resp = "n";
+//         }
+//         if (resp == res[i])
+//         {
+//             lcd_1.clear();
+//             lcd_1.setCursor(0, 0);
+//             lcd_1.print("Correto!");
+//             delay(1000);
+//         }
+//         else
+//         {
+//             lcd_1.clear();
+//             lcd_1.setCursor(0, 0);
+//             lcd_1.print("Errado!");
+//             delay(1000);
+//         }
+//     }
+// }
+
+int perguntas(const char *perg[], const char *res[], int tam)
+{
+    embaralhar(perg, tam);
+    for (int i = 0; i < 2; i++)
+    {
+        lcd_1.clear();
+        lcd_1.setCursor(0, 0);
+        lcd_1.print(perg[i]);
+        // A pergunta deve passar pro lado direito ao esquerdo <---- (scroll), depois sumir e aparecer o tempo.
+        // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
+        for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
+        {
+            lcd_1.setCursor(16, 1);
+            lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
+            lcd_1.autoscroll();
+            delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
+        }
+
+
+
+        lcd_1.setCursor(0, 1);
+        lcd_1.print("S ou N?");
+        delay(1000);
+
+        // // Resposta
+        // int btnSim = digitalRead(sim);
+        // int btnNao = digitalRead(nao);
+        // if (btnSim == 0)
+        // {
+        //     resp = "s";
+        // }
+        // if (btnNao == 0)
+        // {
+        //     resp = "n";
+        // }
+        // if (resp == res[i])
+        // {
+        //     lcd_1.clear();
+        //     lcd_1.setCursor(0, 0);
+        //     lcd_1.print("Correto!");
+        //     delay(1000);
+        // }
+        // else
+        // {
+        //     lcd_1.clear();
+        //     lcd_1.setCursor(0, 0);
+        //     lcd_1.print("Errado!");
+        //     delay(1000);
+        // }
+    }
+}
+
 int fase2()
 {
     intro2();
     delay(500);
+
+    perguntas(facil, res1, 2);
+
     return 0;
 }
 
@@ -694,7 +867,6 @@ void reinicia()
     if (jogo == 0)
     {
         jogo = 1;
-        //fase1();
     }
     else
     {
@@ -720,11 +892,11 @@ void setup()
     pinMode(nao, INPUT_PULLUP);
     pinMode(buzzer, OUTPUT);
     Serial.begin(9600);
-    //tone(buzzer, 440, 1000); // Testando o buzzer
-    //delay(1000);
     noTone(buzzer);
     // Botão de reiniciar
     attachInterrupt(digitalPinToInterrupt(inicio), reinicia, RISING);
+    // Inicializar o randomizador
+    randomSeed(analogRead(0));
 }
 // Looping
 void loop()
@@ -734,7 +906,7 @@ void loop()
 
     // lcd_1.clear();
     //jogo = 1;
-    //passei = 2;
+    passei = 1;
     if (jogo == 0)
     {
         lcd_1.setCursor(0, 0);
