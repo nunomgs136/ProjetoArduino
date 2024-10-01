@@ -397,15 +397,6 @@ int responder(int resposta[])
 
     while (i <= 10)
     {
-        int btnInicio = digitalRead(inicio);
-        if (btnInicio == 0)
-        {
-            jogo++;
-        }
-        while (jogo > 1)
-        {
-            RESET;
-        }
         int btnSim = digitalRead(sim);
         int btnNao = digitalRead(nao);
         lcd_1.setCursor(0, 0);
@@ -716,7 +707,6 @@ int intro2()
     return 0;
 }
 
-
 int embaralhar(const char *vetor[], int tamanho)
 {
     for (int i = 0; i < tamanho; i++)
@@ -752,8 +742,8 @@ int perguntas(const char *perg[], const char *res[], int tam)
         delay(1000);
 
         // // Resposta
-        // int btnSim = digitalRead(sim);
-        // int btnNao = digitalRead(nao);
+        int btnSim = digitalRead(sim);
+        int btnNao = digitalRead(nao);
         // if (btnSim == 0)
         // {
         //     resp = "s";
@@ -830,6 +820,9 @@ void setup()
 // Looping
 void loop()
 {
+    // int btnSim = digitalRead(sim);
+    // int btnNao = digitalRead(nao);
+    // Botão de início
     int btnInicio = digitalRead(inicio);
     //Serial.println(btnInicio);
 
