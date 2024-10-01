@@ -578,7 +578,7 @@ int fase1()
 
 // A partir daqui, a função contador() será chamada para contar o tempo do jogo
 // Variavel para a contagem de tempo do jogo (Maior que 15 reinicia, em 10 toca a música de tempo esgotando)
-int seg = 0;
+//int seg = 15;
 int chance = 1;
 
 // Vão ser 5 perguntas aleatorias de SIM ou NÃO, 2 faceis, 2 médias e 1 dificil, além da pergunta final (padrão: "Você é um robô?").
@@ -689,105 +689,158 @@ int embaralhar(const char *vetor[], int tamanho)
 
 // Verificar se não respondeu a tempo
 // Função contadora de tempo
-int contador(int seg)
-{
-    for (int i = 0; i < seg; i++)
-    {
-        delay(1000);
-        seg++;
-        if (seg == 10)
-        {
-            musica(6);
-        }
-        if (seg == 15)
-        {
-            // Pula
-            if (chance == 1)
-            {
-                // O limite de chances é 1
-                chance = 0;
-                musica(2);
-            }
-            // Perde
-            else
-            {
-                musica(4);
-                RESET;
-            }
-        }
-    }
-    return 0;
-}
+// int contador(int seg)
+// {
+//     for (int i = 0; i < seg; i++)
+//     {
+//         delay(1000);
+//         seg++;
+//         if (seg == 10)
+//         {
+//             musica(6);
+//         }
+//         if (seg == 15)
+//         {
+//             // Pula
+//             if (chance == 1)
+//             {
+//                 // O limite de chances é 1
+//                 chance = 0;
+//                 musica(2);
+//             }
+//             // Perde
+//             else
+//             {
+//                 musica(4);
+//                 RESET;
+//             }
+//         }
+//     }
+//     return 0;
+// }
 
-// Deve passar as perguntas, se a pessoa acertou ou não, e o tempo. Ela só pode errar/pular uma vez, se não perde.
-int perguntas(const char *perg[], const char *res[], int tam)
-{
-    embaralhar(perg, tam);
-    for (int i = 0; i < tam; i++)
-    {
-        lcd_1.clear();
-        lcd_1.setCursor(0, 0);
-        lcd_1.print(perg[i]);
-        // A pergunta deve passar pro lado direito ao esquerdo <---- (scroll), depois sumir e aparecer o tempo.
-        // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
-        for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
-        {
-            lcd_1.setCursor(16, 1);
-            lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
-            lcd_1.autoscroll();
-            delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
-        }
-        lcd_1.clear();
-        lcd_1.setCursor(0, 1);
-        lcd_1.print("S ou N?");
-        delay(1000);
+// // Deve passar as perguntas, se a pessoa acertou ou não, e o tempo. Ela só pode errar/pular uma vez, se não perde.
+// int perguntas(const char *perg[], const char *res[], int tam)
+// {
+//     embaralhar(perg, tam);
+//     for (int i = 0; i < tam; i++)
+//     {
+//         //seg = 15; // Reinicia o tempo
+//         lcd_1.clear();
+//         lcd_1.setCursor(0, 0);
+//         lcd_1.print(perg[i]);
+//         // A pergunta deve passar pro lado direito ao esquerdo <---- (scroll), depois sumir e aparecer o tempo.
+//         // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
+//         // for (int posi_LCD = 0; posi_LCD < ; posi_LCD++)
+//         // {
+//         //     lcd_1.setCursor(16, 1);
+//         //     lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
+//         //     lcd_1.autoscroll();        // Essa função faz com que o texto se mova automaticamente
+//         //     delay(400);                // Quanto menor o tempo, mais rápido será o deslocamento
+//         // }
+//         String pergunta = perg[i];
+//         // Exibe a pergunta completamente, se couber no display
+//         if (pergunta.length() > 16)
+//         {
+//             // Scroll da pergunta (-16 para caber no display)
+//             for (int i = 0; i < pergunta.length() - 16; i++)
+//             {
+//                 lcd_1.scrollDisplayLeft();
+//                 delay(500); // ajusta a velocidade do scroll
+//             }
+//         }
+//         lcd_1.clear();
+//         lcd_1.setCursor(0, 1);
+//         lcd_1.print("S ou N?");
+//         delay(1000);
 
-        // // Resposta
-        int btnSim = digitalRead(sim);
-        int btnNao = digitalRead(nao);
-        // if (btnSim == 0)
-        // {
-        //     resp = "s";
-        // }
-        // if (btnNao == 0)
-        // {
-        //     resp = "n";
-        // }
-        // if (resp == res[i])
-        // {
-        //     lcd_1.clear();
-        //     lcd_1.setCursor(0, 0);
-        //     lcd_1.print("Correto!");
-        //     delay(1000);
-        // }
-        // else
-        // {
-        //     lcd_1.clear();
-        //     lcd_1.setCursor(0, 0);
-        //     lcd_1.print("Errado!");
-        //     delay(1000);
-        // }
-    }
-}
+//         // // Resposta
+//         int btnSim = digitalRead(sim);
+//         int btnNao = digitalRead(nao);
+//         for (int seg = 15; seg >= 0; seg--)
+//         {
+//             delay(1000);
+//             lcd_1.clear();
+//             lcd_1.setCursor(0, 0);
+//             lcd_1.print("Tempo:");
+//             lcd_1.setCursor(8, 0);
+//             lcd_1.print(seg);
+//             if (btnSim == 0)
+//             {
+//                 resp = "s";
+//             }
+//             if (btnNao == 0)
+//             {
+//                 resp = "n";
+//             }
+//             if (resp == res[i])
+//             {
+//                 lcd_1.clear();
+//                 lcd_1.setCursor(0, 1);
+//                 lcd_1.print("Correto!");
+//                 delay(1000);
+//             }
+//             else
+//             {
+//                 lcd_1.clear();
+//                 lcd_1.setCursor(0, 1);
+//                 lcd_1.print("Errado!");
+//                 delay(1000);
+//                 if (chance == 1)
+//                 {
+//                     lcd_1.clear();
+//                     lcd_1.setCursor(0, 1);
+//                     lcd_1.print("Chance extra!");
+//                     chance = 0;
+//                     musica(2);
+//                     // O limite de chances é 1
+//                 }
+//                 // Perde
+//                 else
+//                 {
+//                     musica(4);
+//                     RESET;
+//                 }
+//                 delay(1000);
+//             }
+//             if (seg == 10)
+//             {
+//                 musica(6);
+//             }
+//             else if (seg == 15)
+//             {
+//                 // Pula
+//                 if (chance == 1)
+//                 {
+//                     // O limite de chances é 1
+//                     chance = 0;
+//                     musica(2);
+//                 }
+//                 // Perde
+//                 else
+//                 {
+//                     musica(4);
+//                     RESET;
+//                 }
+//             }
+//         }
+//     }
+//     return 0;
+// }
 
 int fase2()
 {
     intro2();
-    delay(500);
+    delay(1000);
     int round = 0;
-    if round == 0
+    if (round == 0)
     {
-        perguntas(facil, res1, 2);
-    //     round++;
-    // } else if round == 1
-    // {
-        perguntas(medio, res2, 2);
-    //     round++;
-    // } else if round == 2
-    // {
+        // perguntas(facil, res1, 2);
+        // perguntas(medio, res2, 2);
         perguntas(dificil, res3, 1);
-        round++;
-    } else if (round == 1)
+        round = 1;
+    }
+    else if (round == 1)
     {
         // Pergunta final
         lcd_1.clear();
@@ -883,7 +936,7 @@ void loop()
 
     // lcd_1.clear();
     //jogo = 1;
-    //passei = 1;
+    passei = 1;
     if (jogo == 0)
     {
         lcd_1.setCursor(0, 0);
