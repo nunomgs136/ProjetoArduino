@@ -732,7 +732,7 @@ int embaralhar(const char *vetor[], int tamanho)
 int perguntas(const char *perg[], const char *res[], int tam)
 {
     embaralhar(perg, tam);
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < tam; i++)
     {
         lcd_1.clear();
         lcd_1.setCursor(0, 0);
@@ -746,7 +746,7 @@ int perguntas(const char *perg[], const char *res[], int tam)
             lcd_1.autoscroll();
             delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
         }
-        
+        lcd_1.clear();
         lcd_1.setCursor(0, 1);
         lcd_1.print("S ou N?");
         delay(1000);
