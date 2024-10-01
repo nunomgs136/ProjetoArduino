@@ -778,16 +778,16 @@ int fase2()
     if round == 0
     {
         perguntas(facil, res1, 2);
-        round++;
-    } else if round == 1
-    {
+    //     round++;
+    // } else if round == 1
+    // {
         perguntas(medio, res2, 2);
-        round++;
-    } else if round == 2
-    {
+    //     round++;
+    // } else if round == 2
+    // {
         perguntas(dificil, res3, 1);
         round++;
-    } else if (round == 3)
+    } else if (round == 1)
     {
         // Pergunta final
         lcd_1.clear();
