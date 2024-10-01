@@ -577,41 +577,9 @@ int fase1()
 }
 
 // A partir daqui, a função contador() será chamada para contar o tempo do jogo
-// Variavel para a contagem de tempo do jogo (Maior que 20 reinicia, em 15 toca a música de tempo esgotando)
+// Variavel para a contagem de tempo do jogo (Maior que 15 reinicia, em 10 toca a música de tempo esgotando)
 int seg = 0;
 int chance = 1;
-
-// Verificar se não respondeu a tempo
-// Função contadora de tempo
-int contador(int seg)
-{
-    for (int i = 0; i < seg; i++)
-    {
-        delay(1000);
-        seg++;
-        if (seg == 15)
-        {
-            musica(6);
-        }
-        if (seg == 20)
-        {
-            // Pula
-            if (chance == 1)
-            {
-                // O limite de chances é 1
-                chance = 0;
-                musica(2);
-            }
-            // Perde
-            else
-            {
-                musica(4);
-                RESET;
-            }
-        }
-    }
-    return 0;
-}
 
 // Vão ser 5 perguntas aleatorias de SIM ou NÃO, 2 faceis, 2 médias e 1 dificil, além da pergunta final (padrão: "Você é um robô?").
 
@@ -719,6 +687,39 @@ int embaralhar(const char *vetor[], int tamanho)
     return 0;
 }
 
+// Verificar se não respondeu a tempo
+// Função contadora de tempo
+int contador(int seg)
+{
+    for (int i = 0; i < seg; i++)
+    {
+        delay(1000);
+        seg++;
+        if (seg == 10)
+        {
+            musica(6);
+        }
+        if (seg == 15)
+        {
+            // Pula
+            if (chance == 1)
+            {
+                // O limite de chances é 1
+                chance = 0;
+                musica(2);
+            }
+            // Perde
+            else
+            {
+                musica(4);
+                RESET;
+            }
+        }
+    }
+    return 0;
+}
+
+// Deve passar as perguntas, se a pessoa acertou ou não, e o tempo. Ela só pode errar/pular uma vez, se não perde.
 int perguntas(const char *perg[], const char *res[], int tam)
 {
     embaralhar(perg, tam);
@@ -773,8 +774,62 @@ int fase2()
 {
     intro2();
     delay(500);
-
-    perguntas(facil, res1, 2);
+    int round = 0;
+    if round == 0
+    {
+        perguntas(facil, res1, 2);
+        round++;
+    } else if round == 1
+    {
+        perguntas(medio, res2, 2);
+        round++;
+    } else if round == 2
+    {
+        perguntas(dificil, res3, 1);
+        round++;
+    } else if (round == 3)
+    {
+        // Pergunta final
+        lcd_1.clear();
+        lcd_1.setCursor(0, 0);
+        lcd_1.print("Voce e um robo?");
+        lcd_1.setCursor(0, 1);
+        lcd_1.print("S ou N?");
+        delay(1000);
+        int btnSim = digitalRead(sim);
+        int btnNao = digitalRead(nao);
+        if (btnSim == 0)
+        {
+            resp = "s";
+        }
+        if (btnNao == 0)
+        {
+            resp = "n";
+        }
+        if (resp == "n")
+        {
+            lcd_1.clear();
+            lcd_1.setCursor(0, 0);
+            lcd_1.print("Correto!");
+            delay(1000);
+        }
+        else
+        {
+            lcd_1.clear();
+            lcd_1.setCursor(0, 0);
+            lcd_1.print("Errado!");
+            delay(1000);
+            lcd_1.clear();
+            lcd_1.setCursor(0, 0);
+            lcd_1.print("    GAME OVER!");
+            musica(4);
+            delay(400);
+            RESET;
+        }
+    }
+    // perguntas(facil, res1, 2);
+    // perguntas(medio, res2, 2);
+    // perguntas(dificil, res3, 1);
 
     return 0;
 }
