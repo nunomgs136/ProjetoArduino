@@ -687,38 +687,6 @@ int embaralhar(const char *vetor[], int tamanho)
     return 0;
 }
 
-// Verificar se não respondeu a tempo
-// Função contadora de tempo
-// int contador(int seg)
-// {
-//     for (int i = 0; i < seg; i++)
-//     {
-//         delay(1000);
-//         seg++;
-//         if (seg == 10)
-//         {
-//             musica(6);
-//         }
-//         if (seg == 15)
-//         {
-//             // Pula
-//             if (chance == 1)
-//             {
-//                 // O limite de chances é 1
-//                 chance = 0;
-//                 musica(2);
-//             }
-//             // Perde
-//             else
-//             {
-//                 musica(4);
-//                 RESET;
-//             }
-//         }
-//     }
-//     return 0;
-// }
-
 // // Deve passar as perguntas, se a pessoa acertou ou não, e o tempo. Ela só pode errar/pular uma vez, se não perde.
 // int perguntas(const char *perg[], const char *res[], int tam)
 // {
@@ -827,6 +795,20 @@ int embaralhar(const char *vetor[], int tamanho)
 //     }
 //     return 0;
 // }
+
+// Refazendo
+void exibir(const char* pergunta) {
+  // ... código para exibir a pergunta com scroll
+}
+
+bool verificar(const char* respostaUsuario, const char* respostaCorreta) {
+  return strcmp(respostaUsuario, respostaCorreta) == 0;
+}
+
+int perguntas(const char *perg[], const char *res[], int tam)
+{
+    return 0;
+}
 
 int fase2()
 {
