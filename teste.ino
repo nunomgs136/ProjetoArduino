@@ -793,7 +793,7 @@ void reinicia()
         digitalWrite(verde, LOW);
         lcd_1.setCursor(0, 0);
         lcd_1.print("Reiniciando...");
-        delay(20000);
+        delay(30000);
         RESET;
     }
 }
@@ -828,7 +828,7 @@ void loop()
 
     // lcd_1.clear();
     //jogo = 1;
-    passei = 1;
+    //passei = 1;
     if (jogo == 0)
     {
         lcd_1.setCursor(0, 0);
