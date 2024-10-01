@@ -716,25 +716,6 @@ int intro2()
     return 0;
 }
 
-// int embaralhar(char* vetor[], int tamanho)
-// {
-//     // for (int i = 0; i < tamanho; i++)
-//     // {
-//     //     int r = random(tamanho);
-//     //     int temp = vetor[i];
-//     //     vetor[i] = vetor[r];
-//     //     vetor[r] = temp;
-//     // }
-
-//     for (int i = 0; i < tamanho; i++)
-//     {
-//         char r = random(tamanho);
-//         char temp = vetor[i];
-//         vetor[i] = vetor[r];
-//         vetor[r] = temp;
-//     }
-//     return 0;
-// }
 
 int embaralhar(const char *vetor[], int tamanho)
 {
@@ -747,56 +728,6 @@ int embaralhar(const char *vetor[], int tamanho)
     }
     return 0;
 }
-
-// int perguntas(char* perg[], char* res[], int tam)
-// {
-//     embaralhar(perg, tam);
-//     for (int i = 0; i < 2; i++)
-//     {
-//         lcd_1.clear();
-//         lcd_1.setCursor(0, 0);
-//         lcd_1.print(perg[i]);
-//         // A pergunta deve passar pro lado direito ao esquerdo <---- (scroll), depois sumir e aparecer o tempo.
-//         // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
-//         for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
-//         {
-//             lcd_1.setCursor(16, 1);
-//             lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
-//             lcd_1.autoscroll();
-//             delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
-//         }
-
-//         //lcd_1.setCursor(0, 1);
-//         //lcd_1.print("S ou N?");
-//         //delay(1000);
-
-//         // Resposta
-//         int btnSim = digitalRead(sim);
-//         int btnNao = digitalRead(nao);
-//         if (btnSim == 0)
-//         {
-//             resp = "s";
-//         }
-//         if (btnNao == 0)
-//         {
-//             resp = "n";
-//         }
-//         if (resp == res[i])
-//         {
-//             lcd_1.clear();
-//             lcd_1.setCursor(0, 0);
-//             lcd_1.print("Correto!");
-//             delay(1000);
-//         }
-//         else
-//         {
-//             lcd_1.clear();
-//             lcd_1.setCursor(0, 0);
-//             lcd_1.print("Errado!");
-//             delay(1000);
-//         }
-//     }
-// }
 
 int perguntas(const char *perg[], const char *res[], int tam)
 {
@@ -815,9 +746,7 @@ int perguntas(const char *perg[], const char *res[], int tam)
             lcd_1.autoscroll();
             delay(250); // Quanto menor o tempo, mais rápido será o deslocamento
         }
-
-
-
+        
         lcd_1.setCursor(0, 1);
         lcd_1.print("S ou N?");
         delay(1000);
