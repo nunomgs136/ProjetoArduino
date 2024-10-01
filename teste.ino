@@ -554,14 +554,17 @@ int fase1()
     // Faz o texto andar para a esquerda
     //while (lcd_1.cursor() > 0) {
     //}
+    
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
     sprintf(buffer, "Observe a ordem das luzes");
+
     //lcd_1.scrollDisplayLeft();
     //lcd_1.autoscroll();
-    delay(200); // Ajuste o delay para controlar a velocidade
+    //delay(200); // Ajuste o delay para controlar a velocidade
 
     lcd_1.print(buffer);
+
     //lcd_1.setCursor(1,6);
     //sprintf(buffer, "das luzes.");
     lcd_1.print(buffer);
@@ -665,7 +668,11 @@ void reinicia()
     }
     else
     {
+      	digitalWrite(vermelho, LOW);
+      	digitalWrite(verde, LOW);
+      	lcd_1.setCursor(0,0);
         lcd_1.print("Reiniciando...");
+      	delay(20000);
         RESET;
     }
 }
