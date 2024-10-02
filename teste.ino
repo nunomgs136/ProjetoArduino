@@ -670,14 +670,14 @@ void chamada(const char *resp, const char *resposta)
         lcd_1.clear();
         lcd_1.setCursor(0, 0);
         lcd_1.print("Correto!");
-        delay(300);
+        delay(400);
     }
     else
     {
         lcd_1.clear();
         lcd_1.setCursor(0, 0);
         lcd_1.print("Errado!");
-        delay(300);
+        delay(400);
         // if (chance == 1)
         // {
         //     lcd_1.clear();
@@ -715,8 +715,8 @@ void perguntas()
         exibir(quest);
         delay(500);
         lcd_1.clear();
-        lcd_1.setCursor(0, 1);
-        lcd_1.print("SIM ou NAO?");
+        lcd_1.setCursor(3, 1);
+        lcd_1.print("SIM ou NAO");
         delay(300);
         bool respostaRecebida = false;
         int seg = millis();
@@ -736,7 +736,7 @@ void perguntas()
                 {
                     resp = "s";
                     //lcd_1.clear();
-                    lcd_1.setCursor(0, 1);
+                    lcd_1.setCursor(2, 1);
                     lcd_1.print("*SIM ou NAO");
                     delay(300);
                 }
@@ -744,7 +744,7 @@ void perguntas()
                 {
                     resp = "n";
                     //lcd_1.clear();
-                    lcd_1.setCursor(0, 1);
+                    lcd_1.setCursor(2, 1);
                     lcd_1.print("SIM ou *NAO");
                     delay(300);
                 }
@@ -947,19 +947,19 @@ void fase2()
     // }
 }
 
-int fase3()
+void fase3()
 {
     lcd_1.clear();
     //const char *quest = "Voce e um robo?";
     //exibir(quest);
     lcd_1.setCursor(0, 0);
     lcd_1.print("VOCE E UM ROBO?");
-    lcd_1.setCursor(0, 1);
-    lcd_1.print("SIM ou NAO?");
+    lcd_1.setCursor(3, 1);
+    lcd_1.print("SIM ou NAO");
     delay(2000);
     lcd_1.clear();
-    lcd_1.setCursor(0, 1);
-    lcd_1.print("SIM ou NAO?");
+    lcd_1.setCursor(3, 1);
+    lcd_1.print("SIM ou NAO");
     delay(300);
     bool respostaRecebida = false;
     int seg = millis();
@@ -979,7 +979,7 @@ int fase3()
             {
                 resp = "s";
                 //lcd_1.clear();
-                lcd_1.setCursor(0, 1);
+                lcd_1.setCursor(2, 1);
                 lcd_1.print("*SIM ou NAO");
                 delay(300);
             }
@@ -987,7 +987,7 @@ int fase3()
             {
                 resp = "n";
                 //lcd_1.clear();
-                lcd_1.setCursor(0, 1);
+                lcd_1.setCursor(2, 1);
                 lcd_1.print("SIM ou *NAO");
                 delay(300);
             }
@@ -1029,7 +1029,6 @@ int fase3()
             // }
         }
     }
-    return 0;
 }
 // Inicia ou reinicia o jogo
 void reinicia()
@@ -1099,61 +1098,12 @@ void loop()
             fase2();
             passei = 2;
         }
-        // coloque if se continuar bugando no final.
         else if (passei == 2)
         {
             fase3();
             passei = 3;
-            // lcd_1.clear();
-            // lcd_1.setCursor(0, 0);
-            // lcd_1.print("Voce e um robo?");
-            // lcd_1.setCursor(4, 1);
-            // lcd_1.print("S ou N?");
-            // delay(500);
-            // int btnSim = digitalRead(sim);
-            // int btnNao = digitalRead(nao);
-            // if (btnSim == 0)
-            // {
-            //     resp = "s";
-            // }
-            // if (btnNao == 0)
-            // {
-            //     resp = "n";
-            // }
-            // if (resp == "n")
-            // {
-            //     lcd_1.clear();
-            //     lcd_1.setCursor(0, 0);
-            //     lcd_1.print("Correto!");
-            //     delay(1000);
-            // }
-            // else
-            // {
-            //     lcd_1.clear();
-            //     lcd_1.setCursor(0, 0);
-            //     lcd_1.print("Errado!");
-            //     delay(500);
-            //     if (chance == 1)
-            //     {
-            //         lcd_1.clear();
-            //         lcd_1.setCursor(0, 0);
-            //         lcd_1.print("ROBOS NAO");
-            //         lcd_1.setCursor(0, 0);
-            //         lcd_1.print("TEM CHANCES!");
-            //         chance = 0;
-            //         musica(2);
-            //     }
-            //     else
-            //     {
-            //         lcd_1.clear();
-            //         lcd_1.setCursor(0, 0);
-            //         lcd_1.print("GAME OVER!");
-            //         musica(4);
-            //         delay(400);
-            //         RESET;
-            //     }
-            // }
         }
+        // coloque apenas if se continuar bugando no final.
         else if (passei = 3)
         {
             lcd_1.clear();
