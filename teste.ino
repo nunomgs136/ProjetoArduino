@@ -262,6 +262,7 @@ int acabou[] = {
 
 int musica(int tipo)
 {
+    // Testando com 30
     int melodia[40] = {0}; // Inicializa todos os elementos com 0
 
     if (tipo == 1)
@@ -394,7 +395,10 @@ int responder(int resposta[])
     lcd_1.clear();
     int contador = 0;
     int i = 0;
-
+    lcd_1.setCursor(0,0);
+    lcd_1.print("Repita a serie");
+    delay(1000);
+    lcd_1.clear();
     while (i <= 10)
     {
         int btnSim = digitalRead(sim);
@@ -490,7 +494,6 @@ int responder(int resposta[])
     
     sprintf(buffer, "Proxima fase!");
     lcd_1.print(buffer);
-    // delay(1000);
     musica(1);
     return 0;
 }
@@ -544,7 +547,7 @@ int fase1()
 // A contagem de tempo do jogo (Maior que 15 reinicia, em 10 toca a música de tempo esgotando)
 int chance = 1;
 
-// Vão ser 5 perguntas aleatorias de SIM ou NÃO, 2 faceis, 2 médias e 1 dificil, além da pergunta final (padrão: "Você é um robô?").
+// Vão ser 5 perguntas aleatorias de SIM ou NÃO, além da pergunta final (padrão: "Você é um robô?").
 
 const char *banco[15] = {
     "O Sol e uma estrela?",
@@ -562,15 +565,6 @@ const char *banco[15] = {
     "Cachalote e o maior animal do mundo?",
     "O tigre e o maior felino do mundo?",
     "Amazonia e a maior floresta do mundo?"};
-// "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
-// "A gravidade foi descoberta por Albert Einstein?",
-// "A teoria do Big Bang foi proposta por Stephen Hawking?",
-// "A teoria da relatividade foi proposta por Isaac Newton?",
-// "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
-// "A teoria da evolucao foi proposta por Charles Darwin?",
-// "A primeira viagem ao espaco foi realizada por um astronauta americano?",
-// "A Teoria da Relatividade foi proposta no seculo XIX?",
-// "O deserto do Saara e o maior deserto do mundo?"};
 
 // Conferir as respostas
 const char *respostas[15] = {
@@ -589,21 +583,11 @@ const char *respostas[15] = {
     "n",
     "s",
     "s"};
-// const char *respostas[18] = {"s", "s", "s", "n", "s", "n", "s", "s", "s", "s", "n", "n", "n", "s", "n", "n", "n", "n"};
 
 int sorteados[5] = {};
 
 char *resp = " ";
 
-// int intro2()
-// {
-//     lcd_1.clear();
-//     lcd_1.setCursor(3, 0);
-//     lcd_1.print("Responda as");
-//     lcd_1.setCursor(4, 1);
-//     lcd_1.print("perguntas!");
-//     return 0;
-// }
 bool marcadas[15] = {
     false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
 };
@@ -623,7 +607,6 @@ void embaralhar()
         {
             sorteados[j] = indice;
             marcadas[indice] = true;
-            // delay(1000);
         }
         else
         {
@@ -631,20 +614,6 @@ void embaralhar()
         }
     }
 }
-
-// void exibir(const char *q)
-// {
-//     // Exibir a questao com scroll
-//     //delay(1000);
-//     lcd_1.clear();
-//     lcd_1.setCursor(5, 0);
-//     lcd_1.print(q);
-//     for (int i = 0; i < strlen(q) - 16; i++)
-//     {
-//         lcd_1.scrollDisplayLeft();
-//         delay(500);
-//     }
-// }
 
 // Arrumar o exibir!
 void exibir(const char *pergunta)
@@ -676,7 +645,8 @@ void chamada(const char *resp, const char *resposta)
         lcd_1.clear();
         lcd_1.setCursor(4, 0);
         lcd_1.print("Correto!");
-        delay(400);
+        // delay(400);
+        musica(1);
     }
     else
     {
@@ -709,7 +679,6 @@ void perguntas()
         lcd_1.clear();
         lcd_1.setCursor(2, 0);
         per++;
-        // lcd_1.print(per);
         sprintf(buffer, "Pergunta: %d ", per);
         lcd_1.print(buffer);
         lcd_1.setCursor(5, 1);
@@ -740,7 +709,6 @@ void perguntas()
                 if (btnSim == 0)
                 {
                     resp = "s";
-                    //lcd_1.clear();
                     lcd_1.setCursor(2, 1);
                     lcd_1.print("*SIM ou NAO");
                     delay(300);
@@ -748,7 +716,6 @@ void perguntas()
                 if (btnNao == 0)
                 {
                     resp = "n";
-                    //lcd_1.clear();
                     lcd_1.setCursor(2, 1);
                     lcd_1.print("SIM ou *NAO");
                     delay(300);
@@ -756,150 +723,39 @@ void perguntas()
                 chamada(resp, resposta);
                 break;
             }
-            // a musica de tempo esgotando toca quando faltar 10 segundos
+            // a musica de tempo esgotando toca quando faltar 5 segundos
             // Porém isso paralisa completamente o código
-
-            // if (resto == 5000)
-            // {
-            //     // musica(5);
-            //     // tocar aviso de tempo esgotando, sem paralisar o código
-            //     tone(buzzer, 500, 200);
-            //     // tone(buzzer, NOTE_C5, 100);
-            //     // tone(buzzer, NOTE_C5, 100);
-            //     // tone(buzzer, NOTE_C5, 100);
-            // }
-            // if (resto == 4000)
-            // {
-            //     tone(buzzer, 500, 200);
-            // }
-            // if (resto >= 5000)
-            // {
-            //     tone(buzzer, 500, 200);
-            //     noTone(buzzer);
-            // }
             if (resto <= 0)
             {
                 lcd_1.clear();
                 lcd_1.setCursor(0, 0);
                 lcd_1.print("Tempo esgotado!");
-                // delay(500);
                 if (chance == 1)
                 {
                     chance = 0;
-                    //lcd_1.clear();
                     lcd_1.setCursor(4, 1);
                     lcd_1.print("Vidas: 1");
                     delay(1000);
                     lcd_1.setCursor(4, 1);
                     lcd_1.print("Vidas: 0");
                     musica(2);
-                    // embaralhar(1);
-                    
                     lcd_1.clear();
                     per--;
                     a++;
                     break;
-                    // RESET;
                 }
                 else
                 {
                     lcd_1.clear();
-                    lcd_1.setCursor(4, 0);
+                    lcd_1.setCursor(3, 0);
                     lcd_1.print("GAME OVER!");
                     musica(4);
-                    // delay(400);
                     RESET;
                 }
-                // else
-                // {
-                //     break;
-                // }
-                // lcd_1.clear();
-                // lcd_1.print("Tempo esgotado!");
-                // musica(6);
             }
         }
     }
 }
-
-// void perguntas()
-// {
-//     embaralhar();
-//     for (int i = 0; i < 5; i++)
-//     {
-//         int s = sorteados[i];
-//         //lcd_1.clear();
-//         const char *quest = banco[s];
-//         const char *resposta = respostas[s];
-//         lcd_1.clear();
-//         exibir(quest);
-//         delay(500);
-//         lcd_1.clear();
-//         lcd_1.setCursor(0, 1);
-//         lcd_1.print("SIM ou NAO?");
-//         delay(500);
-
-//         int seg = millis();
-//         int total = 15000;
-//         while (true)
-//         {
-//             int resto = total - (millis() - seg);
-//             sprintf(buffer, "Tempo: %d s", resto / 1000);
-//             lcd_1.setCursor(0, 0);
-//             lcd_1.print(buffer);
-//             if (resto == 10000)
-//             {
-//                 musica(5);
-//             }
-//             if (resto <= 0)
-//             {
-//                 if (chance == 1)
-//                 {
-//                     lcd_1.print("Vida extra!");
-//                     musica(4);
-//                     RESET;
-//                 }
-//                 else
-//                 {
-//                     break;
-//                 }
-//                 lcd_1.clear();
-//                 lcd_1.print("Tempo esgotado!");
-//                 musica(6);
-//             }
-//             int btnSim = digitalRead(sim);
-//             int btnNao = digitalRead(nao);
-//             // while (btnSim == 0 || btnNao == 0)
-//             // {
-//             if (btnSim == 0)
-//             {
-//                 resp = "s";
-//                 chamada(resp, resposta);
-//             }
-//             if (btnNao == 0)
-//             {
-//                 resp = "n";
-//                 chamada(resp, resposta);
-//             }
-//         }
-//     }
-
-//     // bool respostaRecebida = false;
-
-//     // while (!respostaRecebida)
-//     // {
-//     //     // ... (código do contador)
-
-//     //     if (btnSim == 0 || btnNao == 0)
-//     //     {
-//     //         respostaRecebida = true;
-//     //         chamada(resp, resposta);
-//     //         break;
-//     //     }
-//     // }
-
-//     // respostaRecebida = false; // Reinicia a flag para a próxima pergunta
-// }
 
 void fase2()
 {
@@ -909,84 +765,14 @@ void fase2()
     lcd_1.print("Responda as");
     lcd_1.setCursor(4, 1);
     lcd_1.print("perguntas!");
-    delay(500);
-    // int round = 0;
-    // if (round == 0)
-    // {
+    delay(1000);
     embaralhar();
     perguntas();
-    // round = 1;
-    // }
-    // else if (round == 1)
-    // {
-    // Pergunta final
-    // lcd_1.clear();
-    // lcd_1.setCursor(0, 0);
-    // lcd_1.print("Voce e um robo?");
-    // lcd_1.setCursor(4, 1);
-    // lcd_1.print("S ou N?");
-    // delay(1000);
-    // int btnSim = digitalRead(sim);
-    // int btnNao = digitalRead(nao);
-    // if (btnSim == 0)
-    // {
-    //     resp = "s";
-    // }
-    // if (btnNao == 0)
-    // {
-    //     resp = "n";
-    // }
-    // if (resp == "n")
-    // {
-    //     lcd_1.clear();
-    //     lcd_1.setCursor(0, 0);
-    //     lcd_1.print("Correto!");
-    //     delay(1000);
-    // }
-    // else
-    // {
-    //     lcd_1.clear();
-    //     lcd_1.setCursor(0, 0);
-    //     lcd_1.print("Errado!");
-    //     delay(500);
-    //     if (chance == 1)
-    //     {
-    //         lcd_1.clear();
-    //         lcd_1.setCursor(0, 0);
-    //         lcd_1.print("ROBOS NAO");
-    //         lcd_1.setCursor(0, 0);
-    //         lcd_1.print("TEM CHANCES!");
-    //         chance = 0;
-    //         musica(2);
-    //     }
-    //     else
-    //     {
-    //         lcd_1.clear();
-    //         lcd_1.setCursor(0, 0);
-    //         lcd_1.print("GAME OVER!");
-    //         musica(4);
-    //         delay(400);
-    //         RESET;
-    //     }
-    // lcd_1.clear();
-    // lcd_1.setCursor(0, 0);
-    // lcd_1.print("Errado!");
-    // delay(1000);
-    // lcd_1.clear();
-    // lcd_1.setCursor(4, 0);
-    // lcd_1.print("GAME OVER!");
-    // musica(4);
-    // delay(400);
-    // RESET;
-    // }
-    // }
 }
 
 void fase3()
 {
     lcd_1.clear();
-    //const char *quest = "Voce e um robo?";
-    //exibir(quest);
     lcd_1.setCursor(1, 0);
     lcd_1.print("PERGUNTA FINAL");
     delay(2000);
@@ -1018,7 +804,6 @@ void fase3()
             if (btnSim == 0)
             {
                 resp = "s";
-                //lcd_1.clear();
                 lcd_1.setCursor(2, 1);
                 lcd_1.print("*SIM ou NAO");
                 delay(300);
@@ -1026,7 +811,6 @@ void fase3()
             if (btnNao == 0)
             {
                 resp = "n";
-                //lcd_1.clear();
                 lcd_1.setCursor(2, 1);
                 lcd_1.print("SIM ou *NAO");
                 delay(300);
@@ -1035,73 +819,18 @@ void fase3()
             chamada(resp, resposta);
             break;
         }
-        // a musica de tempo esgotando toca quando faltar 10 segundos
-        // Porém isso paralisa completamente o código
-        // int intervalosAviso[] = {5000, 4000, 3000, 2000, 1000};
-        // int indiceAviso = 0;
-        // if (resto == intervalosAviso[indiceAviso])
-        // {
-        //     tone(buzzer, 500, 100); // Ajuste a frequência e a duração conforme necessário
-        //     indiceAviso++;
-        //     if (indiceAviso >= sizeof(intervalosAviso) / sizeof(intervalosAviso[0]))
-        //     {
-        //         indiceAviso = 0; // Reinicia o índice
-        //     }
-        // }
-
-        // ARRUMAR
-        // NOTE_C5, 4, NOTE_G4, 8, NOTE_AS4, 4
-        // if (resto == 5000)
-        // {
-        //     // musica(5);
-        //     // tocar aviso de tempo esgotando, sem paralisar o código
-        //     tone(buzzer, 500, 100);
-        //     // tone(buzzer, NOTE_C5, 100);
-        //     // tone(buzzer, NOTE_C5, 100);
-        //     // tone(buzzer, NOTE_C5, 100);
-        // }
-        // if (resto == 4000)
-        // {
-        //     tone(buzzer, 500, 100);
-        // }
-        // if (resto == 3000)
-        // {
-        //     tone(buzzer, 500, 100);
-        // }
-        //  if (resto == 2000)
-        // {
-        //     tone(buzzer, NOTE_AS4, 100);
-        //     tone(buzzer, NOTE_AS4, 100);
-        //     tone(buzzer, NOTE_AS4, 100);
-        //     tone(buzzer, NOTE_AS4, 100);
-        // }
-        // else if (resto == 1000)
-        // {
-        //     tone(buzzer, NOTE_G4, 100);
-        // }
-
         if (resto <= 0)
         {
             lcd_1.clear();
             lcd_1.setCursor(3, 0);
             lcd_1.print("Tempo esgotado!");
             delay(700);
-            // if (chance == 1)
-            // {
-            //     lcd_1.clear();
-            //     lcd_1.print("Chance extra!");
-            //     musica(2);
-            //     // RESET;
-            // }
-            // else
-            // {
+
             lcd_1.clear();
             lcd_1.setCursor(4, 0);
             lcd_1.print("GAME OVER!");
             musica(4);
-            // delay(400);
             RESET;
-            // }
         }
     }
 }
@@ -1153,7 +882,7 @@ void loop()
 
     // lcd_1.clear();
     //jogo = 1;
-    passei = 1;
+    //passei = 3;
     if (jogo == 0)
     {
         lcd_1.setCursor(3, 0);
@@ -1188,7 +917,7 @@ void loop()
             lcd_1.setCursor(2, 1);
             lcd_1.print("VOCE VENCEU!");
             musica(5);
-            delay(400);
+            // delay(400);
             RESET;
         }
     }
