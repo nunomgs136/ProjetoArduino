@@ -620,24 +620,24 @@ int intro2()
     return 0;
 }
 
-int sortear(int sorteados[]){
-  int s;
-  bool sorteado = false;
-  int comp;
-  while(!sorteado){
-	comp = 0;
-	s = random(0, 10);
-    for(int i  = 0; i < 5; i++){
-		if(sorteados[i] == s){
-			comp = 1;
-        }
-	}
-	if (comp == 0){
-		sorteado = true;
-	}
-  }	
-  return s;
-}
+// int sortear(int sorteados[]){
+//   int s;
+//   bool sorteado = false;
+//   int comp;
+//   while(!sorteado){
+// 	comp = 0;
+// 	s = random(0, 10);
+//     for(int i  = 0; i < 5; i++){
+// 		if(sorteados[i] == s){
+// 			comp = 1;
+//         }
+// 	}
+// 	if (comp == 0){
+// 		sorteado = true;
+// 	}
+//   }	
+//   return s;
+// }
 
 // void embaralhar()
 // {
@@ -694,17 +694,17 @@ bool verificar(const char *respostaUsuario, const char *respostaCorreta)
     return strcmp(respostaUsuario, respostaCorreta ) == 0;
 }
 
-int sorteados[5] = {};
+// int sorteados[5] = {};
 int perguntas()
 {
     // embaralhar();
-    int s = sortear(sorteados);
-    for (int i = 0; i < 5; i++)
-    {
-        pergSort[i] = banco[s];
-        //respSort[i] = respostas[s];
-        sorteados[i] = s;
-    }
+    // int s = sortear(sorteados);
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     pergSort[i] = banco[s];
+    //     //respSort[i] = respostas[s];
+    //     sorteados[i] = s;
+    // }
 
     for (int i = 0; i < 5; i++)
     {
