@@ -576,14 +576,12 @@ int fase1()
     return 0;
 }
 
-// A partir daqui, a função contador() será chamada para contar o tempo do jogo
-// Variavel para a contagem de tempo do jogo (Maior que 15 reinicia, em 10 toca a música de tempo esgotando)
-//int seg = 15;
+// A contagem de tempo do jogo (Maior que 15 reinicia, em 10 toca a música de tempo esgotando)
 int chance = 1;
 
 // Vão ser 5 perguntas aleatorias de SIM ou NÃO, 2 faceis, 2 médias e 1 dificil, além da pergunta final (padrão: "Você é um robô?").
 
-const char *banco[18] = {
+const char *banco[15] = {
     "O Sol e uma estrela?",
     "A Lua e um satelite da Terra?",
     "A Terra e redonda?",
@@ -593,20 +591,46 @@ const char *banco[18] = {
     "As abelhas se comunicam dancando?",
     "Os golfinhos sao mamiferos?",
     "O Youtube ja quebrou?",
-    "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
-    "A gravidade foi descoberta por Albert Einstein?",
-    "A teoria do Big Bang foi proposta por Stephen Hawking?",
-    "A teoria da relatividade foi proposta por Isaac Newton?",
-    "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
-    "A teoria da evolucao foi proposta por Charles Darwin?",
-    "A primeira viagem ao espaco foi realizada por um astronauta americano?",
-    "A Teoria da Relatividade foi proposta no seculo XIX?",
-    "O deserto do Saara e o maior deserto do mundo?"};
+    "O Brasil e o maior pais do mundo?",
+    "O sistema solar e composto por 8 planetas?",
+    "Gatos tem 7 vidas?",
+    "Cachoalot e o maior animal do mundo?",
+    "O tigre e o maior felino do mundo?",
+    "A Amazonia e a maior floresta do mundo?"};
+    // "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
+    // "A gravidade foi descoberta por Albert Einstein?",
+    // "A teoria do Big Bang foi proposta por Stephen Hawking?",
+    // "A teoria da relatividade foi proposta por Isaac Newton?",
+    // "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
+    // "A teoria da evolucao foi proposta por Charles Darwin?",
+    // "A primeira viagem ao espaco foi realizada por um astronauta americano?",
+    // "A Teoria da Relatividade foi proposta no seculo XIX?",
+    // "O deserto do Saara e o maior deserto do mundo?"};
 
-const char *respostas[18] = {"s", "s", "s", "n", "s", "n", "s", "s", "s", "s", "n", "n", "n", "s", "n", "n", "n", "n"};
+// Conferir as respostas
+const char *respostas[15] = {
+    "s",
+    "s",
+    "s",
+    "n",
+    "s",
+    "n",
+    "s",
+    "s",
+    "s",
+    "n",
+    "s",
+    "n",
+    "n",
+    "s",
+    "s"};
+// const char *respostas[18] = {"s", "s", "s", "n", "s", "n", "s", "s", "s", "s", "n", "n", "n", "s", "n", "n", "n", "n"};
 
-const char *pergSort[] = {};
-const char *respSort[] = {};
+const char *pergSort[5] = {};
+
+const char *respSort[5] = {};
+
+int *sorteados [5] = {};
 
 char *resp = " ";
 
@@ -689,12 +713,13 @@ void exibir(const char *q)
     }
 }
 
-bool verificar(const char *respostaUsuario, const char *respostaCorreta)
+bool verificar(const char *respUsuario, const char *respCorreta)
 {
-    return strcmp(respostaUsuario, respostaCorreta ) == 0;
+    return strcmp(respUsuario, respCorreta ) == 0;
 }
 
-// int sorteados[5] = {};
+
+
 int perguntas()
 {
     // embaralhar();
