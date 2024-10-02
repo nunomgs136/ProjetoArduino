@@ -1,6 +1,8 @@
 // C++ code
-//
+// Por: Marjorie Luize Martins Costa e Nuno Martins Guilhermino da Silva
 // Créditos pelas músicas: https://github.com/robsoncouto/arduino-songs
+// Github do projeto:
+// https://github.com/nunomgs136/ProjetoArduino/
 // Notas a serem utilizadas
 #define NOTE_B0 31
 #define NOTE_C1 33
