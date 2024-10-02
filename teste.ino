@@ -415,16 +415,17 @@ int responder(int resposta[])
                 contador = 0;
                 lcd_1.clear();
                 lcd_1.setCursor(0, 1);
-                musica(3);
+                // musica(3);
                 sprintf(buffer, "Errado!");
                 lcd_1.print(buffer);
                 lcd_1.setCursor(3, 1);
                 sprintf(buffer, "Reiniciando.");
                 i = 0;
                 digitalWrite(verde, LOW);
-                delay(1000);
+                musica(3);
                 lcd_1.clear();
-                intro1();
+                // intro1();
+                RESET;
                 return 1;
             }
             else
@@ -451,7 +452,6 @@ int responder(int resposta[])
                 contador = 0;
                 lcd_1.clear();
                 lcd_1.setCursor(3, 0);
-                musica(3);
                 sprintf(buffer, "Errado!");
                 lcd_1.print(buffer);
                 lcd_1.setCursor(3, 1);
@@ -459,9 +459,10 @@ int responder(int resposta[])
                 lcd_1.print(buffer);
                 i = 0;
                 digitalWrite(vermelho, LOW);
-                delay(1000);
+                musica(3);
+                //delay(1000);
                 lcd_1.clear();
-                intro1();
+                RESET;
                 return 1;
             }
             else
@@ -486,10 +487,11 @@ int responder(int resposta[])
     }
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
-    musica(1);
+    
     sprintf(buffer, "Proxima fase!");
     lcd_1.print(buffer);
-    delay(1000);
+    // delay(1000);
+    musica(1);
     return 0;
 }
 
@@ -557,9 +559,9 @@ const char *banco[15] = {
     "O Brasil e o maior pais do mundo?",
     "O sistema solar possui 8 planetas?",
     "Gatos tem 7 vidas?",
-    "Cachoalot e o maior animal do mundo?",
+    "Cachalote e o maior animal do mundo?",
     "O tigre e o maior felino do mundo?",
-    "A Amazonia e a maior floresta do mundo?"};
+    "Amazonia e a maior floresta do mundo?"};
 // "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
 // "A gravidade foi descoberta por Albert Einstein?",
 // "A teoria do Big Bang foi proposta por Stephen Hawking?",
@@ -593,33 +595,35 @@ int sorteados[5] = {};
 
 char *resp = " ";
 
-int intro2()
-{
-    lcd_1.clear();
-    lcd_1.setCursor(3, 0);
-    lcd_1.print("Responda as");
-    lcd_1.setCursor(4, 1);
-    lcd_1.print("perguntas!");
-    return 0;
-}
+// int intro2()
+// {
+//     lcd_1.clear();
+//     lcd_1.setCursor(3, 0);
+//     lcd_1.print("Responda as");
+//     lcd_1.setCursor(4, 1);
+//     lcd_1.print("perguntas!");
+//     return 0;
+// }
+bool marcadas[15] = {
+    false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+};
 
 void embaralhar()
 {
     // Cria um array de booleanos para marcar as perguntas já sorteadas
-    bool marcadas[15];
-    for (int i = 0; i < 15; i++)
-    {
-        marcadas[i] = false;
-    }
+    // for (int i = 0; i < 15; i++)
+    // {
+    //     marcadas[i] = false;
+    // }
 
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < 6; j++)
     {
         int indice = random(15);
         if (!marcadas[indice])
         {
             sorteados[j] = indice;
             marcadas[indice] = true;
-            delay(1000);
+            // delay(1000);
         }
         else
         {
@@ -654,7 +658,9 @@ void exibir(const char *pergunta)
         {
             lcd_1.scrollDisplayLeft();
             delay(300); // Quanto menor o tempo, mais rápido será o deslocamento
+            // lcd_1.noAutoscroll();
         }
+        // lcd_1.noAutoscroll();
     }
 }
 
@@ -668,33 +674,21 @@ void chamada(const char *resp, const char *resposta)
     if (verificar(resp, resposta))
     {
         lcd_1.clear();
-        lcd_1.setCursor(0, 0);
+        lcd_1.setCursor(4, 0);
         lcd_1.print("Correto!");
         delay(400);
     }
     else
     {
         lcd_1.clear();
-        lcd_1.setCursor(0, 0);
+        lcd_1.setCursor(4, 0);
         lcd_1.print("Errado!");
         delay(400);
-        // if (chance == 1)
-        // {
-        //     lcd_1.clear();
-        //     lcd_1.setCursor(0, 0);
-        //     lcd_1.print("Chance extra!");
-        //     chance = 0;
-        //     musica(2);
-        // }
-        // else
-        // {
         lcd_1.clear();
         lcd_1.setCursor(4, 0);
         lcd_1.print("GAME OVER!");
         musica(4);
-        // delay(400);
         RESET;
-        // }
     }
 }
 
@@ -705,12 +699,22 @@ bool verificarResposta()
 
 void perguntas()
 {
-    for (int i = 0; i < 5; i++)
+    int a = 5;
+    int per = 0;
+    for (int i = 0; i < a; i++)
     {
         int s = sorteados[i];
         const char *quest = banco[s];
         const char *resposta = respostas[s];
-
+        lcd_1.clear();
+        lcd_1.setCursor(2, 0);
+        per++;
+        // lcd_1.print(per);
+        sprintf(buffer, "Pergunta: %d ", per);
+        lcd_1.print(buffer);
+        lcd_1.setCursor(5, 1);
+        lcd_1.print(" de 5 ");
+        delay(2000);
         lcd_1.clear();
         exibir(quest);
         delay(500);
@@ -720,12 +724,13 @@ void perguntas()
         delay(300);
         bool respostaRecebida = false;
         int seg = millis();
-        int total = 15000;
+        int total = 10000;
         while (!respostaRecebida)
         {
             int resto = total - (millis() - seg);
+            // Serial.println(resto);
             sprintf(buffer, "Tempo: %d ", resto / 1000);
-            lcd_1.setCursor(0, 0);
+            lcd_1.setCursor(4, 0);
             lcd_1.print(buffer);
             int btnSim = digitalRead(sim);
             int btnNao = digitalRead(nao);
@@ -754,30 +759,55 @@ void perguntas()
             // a musica de tempo esgotando toca quando faltar 10 segundos
             // Porém isso paralisa completamente o código
 
-            if (resto == 10000)
-            {
-                // musica(5);
-                // tocar aviso de tempo esgotando, sem paralisar o código
-                tone(buzzer, 500, 100);
-            }
+            // if (resto == 5000)
+            // {
+            //     // musica(5);
+            //     // tocar aviso de tempo esgotando, sem paralisar o código
+            //     tone(buzzer, 500, 200);
+            //     // tone(buzzer, NOTE_C5, 100);
+            //     // tone(buzzer, NOTE_C5, 100);
+            //     // tone(buzzer, NOTE_C5, 100);
+            // }
+            // if (resto == 4000)
+            // {
+            //     tone(buzzer, 500, 200);
+            // }
+            // if (resto >= 5000)
+            // {
+            //     tone(buzzer, 500, 200);
+            //     noTone(buzzer);
+            // }
             if (resto <= 0)
             {
                 lcd_1.clear();
+                lcd_1.setCursor(0, 0);
                 lcd_1.print("Tempo esgotado!");
-                delay(300);
+                // delay(500);
                 if (chance == 1)
                 {
-                    lcd_1.clear();
-                    lcd_1.print("Vida extra!");
+                    chance = 0;
+                    //lcd_1.clear();
+                    lcd_1.setCursor(4, 1);
+                    lcd_1.print("Vidas: 1");
+                    delay(1000);
+                    lcd_1.setCursor(4, 1);
+                    lcd_1.print("Vidas: 0");
                     musica(2);
+                    // embaralhar(1);
+                    
+                    lcd_1.clear();
+                    per--;
+                    a++;
+                    break;
                     // RESET;
                 }
                 else
                 {
                     lcd_1.clear();
+                    lcd_1.setCursor(4, 0);
                     lcd_1.print("GAME OVER!");
                     musica(4);
-                    delay(400);
+                    // delay(400);
                     RESET;
                 }
                 // else
@@ -873,8 +903,13 @@ void perguntas()
 
 void fase2()
 {
-    intro2();
-    //delay(500);
+    // intro2();
+    lcd_1.clear();
+    lcd_1.setCursor(3, 0);
+    lcd_1.print("Responda as");
+    lcd_1.setCursor(4, 1);
+    lcd_1.print("perguntas!");
+    delay(500);
     // int round = 0;
     // if (round == 0)
     // {
@@ -952,6 +987,10 @@ void fase3()
     lcd_1.clear();
     //const char *quest = "Voce e um robo?";
     //exibir(quest);
+    lcd_1.setCursor(1, 0);
+    lcd_1.print("PERGUNTA FINAL");
+    delay(2000);
+    lcd_1.clear();
     lcd_1.setCursor(0, 0);
     lcd_1.print("VOCE E UM ROBO?");
     lcd_1.setCursor(3, 1);
@@ -967,8 +1006,9 @@ void fase3()
     while (!respostaRecebida)
     {
         int resto = total - (millis() - seg);
+
         sprintf(buffer, "Tempo: %d ", resto / 1000);
-        lcd_1.setCursor(0, 0);
+        lcd_1.setCursor(3, 0);
         lcd_1.print(buffer);
         int btnSim = digitalRead(sim);
         int btnNao = digitalRead(nao);
@@ -997,20 +1037,55 @@ void fase3()
         }
         // a musica de tempo esgotando toca quando faltar 10 segundos
         // Porém isso paralisa completamente o código
+        // int intervalosAviso[] = {5000, 4000, 3000, 2000, 1000};
+        // int indiceAviso = 0;
+        // if (resto == intervalosAviso[indiceAviso])
+        // {
+        //     tone(buzzer, 500, 100); // Ajuste a frequência e a duração conforme necessário
+        //     indiceAviso++;
+        //     if (indiceAviso >= sizeof(intervalosAviso) / sizeof(intervalosAviso[0]))
+        //     {
+        //         indiceAviso = 0; // Reinicia o índice
+        //     }
+        // }
 
-        if (resto == 10000)
-        {
-            // musica(5);
-            // tocar aviso de tempo esgotando, sem paralisar o código
+        // ARRUMAR
+        // NOTE_C5, 4, NOTE_G4, 8, NOTE_AS4, 4
+        // if (resto == 5000)
+        // {
+        //     // musica(5);
+        //     // tocar aviso de tempo esgotando, sem paralisar o código
+        //     tone(buzzer, 500, 100);
+        //     // tone(buzzer, NOTE_C5, 100);
+        //     // tone(buzzer, NOTE_C5, 100);
+        //     // tone(buzzer, NOTE_C5, 100);
+        // }
+        // if (resto == 4000)
+        // {
+        //     tone(buzzer, 500, 100);
+        // }
+        // if (resto == 3000)
+        // {
+        //     tone(buzzer, 500, 100);
+        // }
+        //  if (resto == 2000)
+        // {
+        //     tone(buzzer, NOTE_AS4, 100);
+        //     tone(buzzer, NOTE_AS4, 100);
+        //     tone(buzzer, NOTE_AS4, 100);
+        //     tone(buzzer, NOTE_AS4, 100);
+        // }
+        // else if (resto == 1000)
+        // {
+        //     tone(buzzer, NOTE_G4, 100);
+        // }
 
-            // ARRUMAR
-            tone(buzzer, 500, 100);
-        }
         if (resto <= 0)
         {
             lcd_1.clear();
+            lcd_1.setCursor(3, 0);
             lcd_1.print("Tempo esgotado!");
-            delay(500);
+            delay(700);
             // if (chance == 1)
             // {
             //     lcd_1.clear();
@@ -1044,6 +1119,7 @@ void reinicia()
         digitalWrite(verde, LOW);
         lcd_1.setCursor(0, 0);
         lcd_1.print("Reiniciando...");
+        musica(6);
         delay(30000);
         RESET;
     }
@@ -1077,7 +1153,7 @@ void loop()
 
     // lcd_1.clear();
     //jogo = 1;
-    passei = 2;
+    passei = 1;
     if (jogo == 0)
     {
         lcd_1.setCursor(3, 0);
