@@ -585,22 +585,22 @@ int chance = 1;
 
 // // Perguntas faceis: 6
 // const char *facil[]{
-//     "O Sol é uma estrela?",
-//     "A Lua é um satélite da Terra?",
-//     "A Terra é redonda?",
-//     "Tomate é um vegetal?",
-//     "O Japão é um arquipélago?",
-//     "Os morcegos são cegos?"};
+//     "O Sol e uma estrela?",
+//     "A Lua e um satelite da Terra?",
+//     "A Terra e redonda?",
+//     "Tomate e um vegetal?",
+//     "O Japao e um arquipelago?",
+//     "Os morcegos sao cegos?"};
 
 // const char *res1[] = {
 //     "s", "s", "s", "n", "s", "n"};
 
-// // Perguntas médias: 6
+// // Perguntas medias: 6
 // const char *medio[] = {
-//     "As abelhas se comunicam dançando?",
-//     "Os golfinhos são mamíferos?",
-//     "O Youtube já quebrou?",
-//     "A Guerra Fria ocorreu após a Segunda Guerra Mundial?",
+//     "As abelhas se comunicam dancando?",
+//     "Os golfinhos sao mamiferos?",
+//     "O Youtube ja quebrou?",
+//     "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
 //     "A gravidade foi descoberta por Albert Einstein?",
 //     "A teoria do Big Bang foi proposta por Stephen Hawking?"};
 
@@ -608,52 +608,41 @@ int chance = 1;
 //     "s", "s", "s", "s", "n", "n"};
 
 // // Perguntas dificeis: 6
-// const char *dificil[] = {
+// const char *dificil[]{
 //     "A teoria da relatividade foi proposta por Isaac Newton?",
-//     "A primeira mulher a ganhar um prêmio Nobel foi Marie Curie?",
-//     "A teoria da evolução foi proposta por Charles Darwin?",
-//     "A primeira viagem ao espaço foi realizada por um astronauta americano?",
-//     "A Teoria da Relatividade foi proposta no século XIX?",
-//     "O deserto do Saara é o maior deserto do mundo?"};
+//     "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
+//     "A teoria da evolucao foi proposta por Charles Darwin?",
+//     "A primeira viagem ao espaco foi realizada por um astronauta americano?",
+//     "A Teoria da Relatividade foi proposta no seculo XIX?",
+//     "O deserto do Saara e o maior deserto do mundo?"};
 
 // const char *res3[] = {
 //     "n", "s", "n", "n", "n", "n"};
 
-// Perguntas faceis: 6
-const char *facil[]{
+const char *banco[] = {
     "O Sol e uma estrela?",
     "A Lua e um satelite da Terra?",
     "A Terra e redonda?",
     "Tomate e um vegetal?",
     "O Japao e um arquipelago?",
-    "Os morcegos sao cegos?"};
-
-const char *res1[] = {
-    "s", "s", "s", "n", "s", "n"};
-
-// Perguntas medias: 6
-const char *medio[] = {
+    "Os morcegos sao cegos?",
     "As abelhas se comunicam dancando?",
     "Os golfinhos sao mamiferos?",
     "O Youtube ja quebrou?",
     "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
     "A gravidade foi descoberta por Albert Einstein?",
-    "A teoria do Big Bang foi proposta por Stephen Hawking?"};
-
-const char *res2[] = {
-    "s", "s", "s", "s", "n", "n"};
-
-// Perguntas dificeis: 6
-const char *dificil[]{
+    "A teoria do Big Bang foi proposta por Stephen Hawking?",
     "A teoria da relatividade foi proposta por Isaac Newton?",
     "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
     "A teoria da evolucao foi proposta por Charles Darwin?",
     "A primeira viagem ao espaco foi realizada por um astronauta americano?",
     "A Teoria da Relatividade foi proposta no seculo XIX?",
-    "O deserto do Sahara e o maior deserto do mundo?"};
+    "O deserto do Saara e o maior deserto do mundo?"};
 
-const char *res3[] = {
-    "n", "s", "n", "n", "n", "n"};
+const char *respostas[] = {"s", "s", "s", "n", "s", "n", "s", "s", "s", "s", "n", "n", "n", "s", "n", "n", "n", "n"};
+
+const char *pergSort[] = {};
+const char *respSort[] = {};
 
 char *resp = " ";
 
@@ -675,19 +664,19 @@ int intro2()
     return 0;
 }
 
-int embaralhar(const char *vetor[], int tamanho)
-{
-    for (int i = 0; i < tamanho; i++)
-    {
-        int r = random(tamanho);
-        const char *temp = vetor[i];
-        vetor[i] = vetor[r];
-        vetor[r] = temp;
-    }
-    return 0;
-}
+// int embaralhar(const char *vetor[], int tamanho)
+// {
+//     for (int i = 0; i < tamanho; i++)
+//     {
+//         int r = random(tamanho);
+//         const char *temp = vetor[i];
+//         vetor[i] = vetor[r];
+//         vetor[r] = temp;
+//     }
+//     return 0;
+// }
 
-// // Deve passar as perguntas, se a pessoa acertou ou não, e o tempo. Ela só pode errar/pular uma vez, se não perde.
+// // // Deve passar as perguntas, se a pessoa acertou ou não, e o tempo. Ela só pode errar/pular uma vez, se não perde.
 // int perguntas(const char *perg[], const char *res[], int tam)
 // {
 //     embaralhar(perg, tam);
@@ -699,24 +688,24 @@ int embaralhar(const char *vetor[], int tamanho)
 //         lcd_1.print(perg[i]);
 //         // A pergunta deve passar pro lado direito ao esquerdo <---- (scroll), depois sumir e aparecer o tempo.
 //         // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
-//         // for (int posi_LCD = 0; posi_LCD < ; posi_LCD++)
-//         // {
-//         //     lcd_1.setCursor(16, 1);
-//         //     lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
-//         //     lcd_1.autoscroll();        // Essa função faz com que o texto se mova automaticamente
-//         //     delay(400);                // Quanto menor o tempo, mais rápido será o deslocamento
-//         // }
-//         String pergunta = perg[i];
-//         // Exibe a pergunta completamente, se couber no display
-//         if (pergunta.length() > 16)
+//         for (int posi_LCD = 0; posi_LCD < 36 ; posi_LCD++)
 //         {
-//             // Scroll da pergunta (-16 para caber no display)
-//             for (int i = 0; i < pergunta.length() - 16; i++)
-//             {
-//                 lcd_1.scrollDisplayLeft();
-//                 delay(500); // ajusta a velocidade do scroll
-//             }
+//             lcd_1.setCursor(0, 0);
+//             lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
+//             //lcd_1.autoscroll();        // Essa função faz com que o texto se mova automaticamente
+//             delay(400);                // Quanto menor o tempo, mais rápido será o deslocamento
 //         }
+//         //String pergunta = perg[i];
+//         // Exibe a pergunta completamente, se couber no display
+//         // if (pergunta.length() > 16)
+//         // {
+//         //     // Scroll da pergunta (-16 para caber no display)
+//         //     for (int i = 0; i < pergunta.length() - 16; i++)
+//         //     {
+//         //         lcd_1.scrollDisplayLeft();
+//         //         delay(500); // ajusta a velocidade do scroll
+//         //     }
+//         // }
 //         lcd_1.clear();
 //         lcd_1.setCursor(0, 1);
 //         lcd_1.print("S ou N?");
@@ -797,16 +786,257 @@ int embaralhar(const char *vetor[], int tamanho)
 // }
 
 // Refazendo
-void exibir(const char* pergunta) {
-  // ... código para exibir a pergunta com scroll
-}
 
-bool verificar(const char* respostaUsuario, const char* respostaCorreta) {
-  return strcmp(respostaUsuario, respostaCorreta) == 0;
-}
+// int embaralhar()
+// {
+//     // Embaralha as perguntas: 5 perguntas aleatorias do banco de questões, deve conferir se as perguntas não estão repetidas. E depois de conferir, passar as sorteadas e suas respectivas respostas para os vetores pergSort e respSort.
+//     // for (int i = 0; i < 5; i++)
+//     // {
+//     //     int r = random(18);
+//     //     pergSort[i] = banco[r];
+//     //     respSort[i] = respostas[r];
+//     //     for (int j = 0; j < i; j++)
+//     //     {
+//     //         if (pergSort[i] == pergSort[j])
+//     //         {
+//     //             i--;
+//     //             break;
+//     //         }
+//     //     }
+//     // }
+//     return 0;
+// }
 
-int perguntas(const char *perg[], const char *res[], int tam)
+// void embaralhar() {
+//   for (int i = 18 ; i > 0; i--) {
+//     int j = random(18);
+//     // int j = random(i + 1);
+//     // // Troca os elementos nas posições i e j
+//     // int temp = banco[i];
+//     // banco[i] = banco[j];
+//     // banco[j] = temp;
+
+//     // // Faça o mesmo para o array 'respostas'
+//     // temp = respostas[i];
+//     // respostas[i] = respostas[j];
+//     // respostas[j] = temp;
+//   }
+//   // Copiar as primeiras 5 perguntas para pergSort e respSort
+//   for (int i = 0; i < 5; i++) {
+//     pergSort[i] = banco[i];
+//     respSort[i] = respostas[i];
+//   }
+// }
+void embaralhar()
 {
+    // Cria um array de booleanos para marcar as perguntas já sorteadas
+    bool marcadas[sizeof(banco) / sizeof(banco[0])];
+    for (int i = 0; i < sizeof(banco) / sizeof(banco[0]); i++)
+    {
+        marcadas[i] = false;
+    }
+
+    int total = 5; // Número de perguntas a serem sorteadas
+    int selecionado = 0;
+
+    while (selecionado < total)
+    {
+        int indice = rand() % sizeof(banco) / sizeof(banco[0]);
+        if (!marcadas[indice])
+        {
+            pergSort[selecionado] = banco[indice];
+            respSort[selecionado] = respostas[indice];
+            marcadas[indice] = true;
+            selecionado++;
+        }
+    }
+}
+// void embaralhar()
+// {
+
+//     // Cria um array de booleanos para marcar as perguntas já sorteadas
+//     bool sorteado[sizeof(banco) / sizeof(banco[0])];
+//     for (int i = 0; i < sizeof(banco) / sizeof(banco[0]); i++)
+//     {
+//         sorteado[i] = false;
+//     }
+
+//     int indice = 0;
+//     while (indice < 5)
+//     {
+//         int sorteado = rand() % sizeof(banco) / sizeof(banco[0]);
+//         if (!sorteado[sorteado])
+//         {
+//             pergSort[indice] = banco[sorteado];
+//             respSort[indice] = respostas[sorteado];
+//             sorteado[sorteado] = true;
+//             indice++;
+//         }
+//     }
+// }
+// for (int i = 0; i < 18; i++) {
+//     int r = random(18);
+//     const char *temp = banco[i];
+//     banco[i] = banco[r];
+//     banco[r] = temp;
+//     temp = respostas[i];
+//     respostas[i] = respostas[r];
+//     respostas[r] = temp;
+// }
+// for (int i = 0; i < 5; i++) {
+//     pergSort[i] = banco[i];
+//     respSort[i] = respostas[i];
+// }
+
+// }
+
+void exibir(const char *pergunta)
+{
+    // Exibir a pergunta com scroll
+    //delay(1000);
+    lcd_1.setCursor(0, 0);
+    lcd_1.print(pergunta);
+    for (int i = 0; i < strlen(pergunta) - 16; i++)
+    {
+        lcd_1.scrollDisplayLeft();
+        delay(500);
+    }
+    //delay(1000);
+}
+
+// bool verificar(const char *respostaUsuario, const char *respostaCorreta)
+// {
+//     return strcmp(respostaUsuario, respostaCorreta) == 0;
+// }
+bool verificar(const char *respostaUsuario, const char *respostaCorreta)
+{
+    return strcmp(respostaUsuario, respostaCorreta ) == 0;
+}
+
+int perguntas()
+{
+    embaralhar();
+    for (int i = 0; i < 5; i++)
+    {
+        lcd_1.clear();
+        const char *pergunta = pergSort[i];
+        exibir(pergunta);
+        lcd_1.setCursor(0, 1);
+        lcd_1.print("SIM ou NAO?");
+        char resposta[2];
+        while (true)
+        {
+            int seg = millis();
+            int total = 15000;
+            while (true)
+            {
+                int resto = total - (millis() - seg);
+                sprintf(buffer, "Tempo: %d s", resto / 1000);
+                lcd_1.setCursor(0, 0);
+                lcd_1.print(buffer);
+                if (resto == 10000)
+                {
+                    musica(5);
+                }
+                if (resto <= 0)
+                {
+                    if (chance == 1)
+                    {
+                        lcd_1.print("Vida extra!");
+                        musica(4);
+                        RESET;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    lcd_1.clear();
+                    lcd_1.print("Tempo esgotado!");
+                    musica(6);
+                }
+                int btnSim = digitalRead(sim);
+                int btnNao = digitalRead(nao);
+                // if (btnSim == 0)
+                // {
+                //     resp = "s";
+                // }
+                // if (btnNao == 0)
+                // {
+                //     resp = "n";
+                // }
+                while (btnSim == 0 || btnNao == 0)
+                {
+                    if (btnSim == 0)
+                    {
+                        resp = "s";
+                    }
+                    if (btnNao == 0)
+                    {
+                        resp = "n";
+                    }
+                    if (verificar(resp, respSort[i]))
+                    {
+                        lcd_1.clear();
+                        lcd_1.setCursor(0, 0);
+                        lcd_1.print("Correto!");
+                        delay(1000);
+                    }
+                    else
+                    {
+                        lcd_1.clear();
+                        lcd_1.setCursor(0, 0);
+                        lcd_1.print("Errado!");
+                        delay(1000);
+                        lcd_1.clear();
+                        lcd_1.setCursor(0, 0);
+                        lcd_1.print("    GAME OVER!");
+                        musica(4);
+                        delay(400);
+                        RESET;
+                    }
+                }
+                
+
+            }
+            if (verificar(resposta, respSort[i]))
+            {
+                lcd_1.clear();
+                lcd_1.setCursor(0, 0);
+                lcd_1.print("Correto!");
+                delay(1000);
+            }
+            else
+            {
+                lcd_1.clear();
+                lcd_1.setCursor(0, 0);
+                lcd_1.print("Errado!");
+                delay(1000);
+                if (chance == 1)
+                {
+                    lcd_1.clear();
+                    lcd_1.setCursor(0, 0);
+                    lcd_1.print("Chance extra!");
+                    chance = 0;
+                    musica(2);
+                }
+                else
+                {
+                    lcd_1.clear();
+                    lcd_1.setCursor(0, 0);
+                    lcd_1.print("    GAME OVER!");
+                    musica(4);
+                    delay(400);
+                    RESET;
+                }
+                // lcd_1.clear();
+                // lcd_1.setCursor(0, 0);
+                // lcd_1.print("    GAME OVER!");
+                // musica(4);
+                // delay(400);
+                // RESET;
+            }
+        }
+    }
     return 0;
 }
 
@@ -817,9 +1047,11 @@ int fase2()
     int round = 0;
     if (round == 0)
     {
+        // embaralhar();
+        perguntas();
         // perguntas(facil, res1, 2);
         // perguntas(medio, res2, 2);
-        perguntas(dificil, res3, 1);
+        // perguntas(dificil, res3, 1);
         round = 1;
     }
     else if (round == 1)
