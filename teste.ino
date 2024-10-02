@@ -395,7 +395,7 @@ int responder(int resposta[])
     lcd_1.clear();
     int contador = 0;
     int i = 0;
-    lcd_1.setCursor(0,0);
+    lcd_1.setCursor(0, 0);
     lcd_1.print("Repita a serie");
     delay(1000);
     lcd_1.clear();
@@ -419,7 +419,6 @@ int responder(int resposta[])
                 contador = 0;
                 lcd_1.clear();
                 lcd_1.setCursor(0, 1);
-                // musica(3);
                 sprintf(buffer, "Errado!");
                 lcd_1.print(buffer);
                 lcd_1.setCursor(3, 1);
@@ -428,7 +427,6 @@ int responder(int resposta[])
                 digitalWrite(verde, LOW);
                 musica(3);
                 lcd_1.clear();
-                // intro1();
                 RESET;
                 return 1;
             }
@@ -464,7 +462,6 @@ int responder(int resposta[])
                 i = 0;
                 digitalWrite(vermelho, LOW);
                 musica(3);
-                //delay(1000);
                 lcd_1.clear();
                 RESET;
                 return 1;
@@ -491,7 +488,7 @@ int responder(int resposta[])
     }
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
-    
+
     sprintf(buffer, "Proxima fase!");
     lcd_1.print(buffer);
     musica(1);
@@ -548,7 +545,6 @@ int fase1()
 int chance = 1;
 
 // Vão ser 5 perguntas aleatorias de SIM ou NÃO, além da pergunta final (padrão: "Você é um robô?").
-
 const char *banco[15] = {
     "O Sol e uma estrela?",
     "A Lua e um satelite da Terra?",
@@ -586,20 +582,13 @@ const char *respostas[15] = {
 
 int sorteados[5] = {};
 
-char *resp = " ";
+char *resp;
 
 bool marcadas[15] = {
-    false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
-};
+    false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
 void embaralhar()
 {
-    // Cria um array de booleanos para marcar as perguntas já sorteadas
-    // for (int i = 0; i < 15; i++)
-    // {
-    //     marcadas[i] = false;
-    // }
-
     for (int j = 0; j < 6; j++)
     {
         int indice = random(15);
@@ -615,10 +604,8 @@ void embaralhar()
     }
 }
 
-// Arrumar o exibir!
 void exibir(const char *pergunta)
 {
-    // lcd_1.clear();
     lcd_1.setCursor(2, 0);
     lcd_1.print(pergunta);
     if (strlen(pergunta) > 16)
@@ -627,9 +614,7 @@ void exibir(const char *pergunta)
         {
             lcd_1.scrollDisplayLeft();
             delay(300); // Quanto menor o tempo, mais rápido será o deslocamento
-            // lcd_1.noAutoscroll();
         }
-        // lcd_1.noAutoscroll();
     }
 }
 
@@ -645,7 +630,6 @@ void chamada(const char *resp, const char *resposta)
         lcd_1.clear();
         lcd_1.setCursor(4, 0);
         lcd_1.print("Correto!");
-        // delay(400);
         musica(1);
     }
     else
@@ -697,7 +681,6 @@ void perguntas()
         while (!respostaRecebida)
         {
             int resto = total - (millis() - seg);
-            // Serial.println(resto);
             sprintf(buffer, "Tempo: %d ", resto / 1000);
             lcd_1.setCursor(4, 0);
             lcd_1.print(buffer);
@@ -708,14 +691,14 @@ void perguntas()
                 respostaRecebida = true;
                 if (btnSim == 0)
                 {
-                    resp = "s";
+                    resp = 's';
                     lcd_1.setCursor(2, 1);
                     lcd_1.print("*SIM ou NAO");
                     delay(300);
                 }
                 if (btnNao == 0)
                 {
-                    resp = "n";
+                    resp = 'n';
                     lcd_1.setCursor(2, 1);
                     lcd_1.print("SIM ou *NAO");
                     delay(300);
@@ -759,7 +742,6 @@ void perguntas()
 
 void fase2()
 {
-    // intro2();
     lcd_1.clear();
     lcd_1.setCursor(3, 0);
     lcd_1.print("Responda as");
@@ -803,14 +785,14 @@ void fase3()
             respostaRecebida = true;
             if (btnSim == 0)
             {
-                resp = "s";
+                resp = 's';
                 lcd_1.setCursor(2, 1);
                 lcd_1.print("*SIM ou NAO");
                 delay(300);
             }
             if (btnNao == 0)
             {
-                resp = "n";
+                resp = 'n';
                 lcd_1.setCursor(2, 1);
                 lcd_1.print("SIM ou *NAO");
                 delay(300);
@@ -878,11 +860,6 @@ void loop()
 {
     // Botão de início
     int btnInicio = digitalRead(inicio);
-    //Serial.println(btnInicio);
-
-    // lcd_1.clear();
-    //jogo = 1;
-    //passei = 3;
     if (jogo == 0)
     {
         lcd_1.setCursor(3, 0);
@@ -908,7 +885,6 @@ void loop()
             fase3();
             passei = 3;
         }
-        // coloque apenas if se continuar bugando no final.
         else if (passei = 3)
         {
             lcd_1.clear();
@@ -917,7 +893,6 @@ void loop()
             lcd_1.setCursor(2, 1);
             lcd_1.print("VOCE VENCEU!");
             musica(5);
-            // delay(400);
             RESET;
         }
     }
