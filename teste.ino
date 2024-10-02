@@ -555,7 +555,7 @@ const char *banco[15] = {
     "Os golfinhos sao mamiferos?",
     "O Youtube ja quebrou?",
     "O Brasil e o maior pais do mundo?",
-    "O sistema solar e composto por 8 planetas?",
+    "O sistema solar possui 8 planetas?",
     "Gatos tem 7 vidas?",
     "Cachoalot e o maior animal do mundo?",
     "O tigre e o maior felino do mundo?",
@@ -642,6 +642,7 @@ void embaralhar()
 //     }
 // }
 
+// Arrumar o exibir!
 void exibir(const char *pergunta)
 {
     // lcd_1.clear();
@@ -649,16 +650,7 @@ void exibir(const char *pergunta)
     lcd_1.print(pergunta);
     if (strlen(pergunta) > 16)
     {
-        // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
-        // for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
-        // {
-        //     //lcd_1.setCursor(4, 1);
-        //     lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
-        //                                // lcd_1.autoscroll();
-        //     delay(250);                // Quanto menor o tempo, mais rápido será o deslocamento
-        // }
-        // Scroll da pergunta (-16 para caber no display)
-        for (int i = 0; i < strlen(pergunta) - 7; i++)
+        for (int i = 0; i < strlen(pergunta); i++)
         {
             lcd_1.scrollDisplayLeft();
             delay(300); // Quanto menor o tempo, mais rápido será o deslocamento
@@ -686,239 +678,359 @@ void chamada(const char *resp, const char *resposta)
         lcd_1.setCursor(0, 0);
         lcd_1.print("Errado!");
         delay(300);
-        if (chance == 1)
-        {
-            lcd_1.clear();
-            lcd_1.setCursor(0, 0);
-            lcd_1.print("Chance extra!");
-            chance = 0;
-            musica(2);
-        }
-        else
-        {
-            lcd_1.clear();
-            lcd_1.setCursor(0, 0);
-            lcd_1.print("    GAME OVER!");
-            musica(4);
-            // delay(400);
-            RESET;
-        }
+        // if (chance == 1)
+        // {
+        //     lcd_1.clear();
+        //     lcd_1.setCursor(0, 0);
+        //     lcd_1.print("Chance extra!");
+        //     chance = 0;
+        //     musica(2);
+        // }
+        // else
+        // {
+        lcd_1.clear();
+        lcd_1.setCursor(4, 0);
+        lcd_1.print("GAME OVER!");
+        musica(4);
+        // delay(400);
+        RESET;
+        // }
     }
 }
-int perguntas()
-{
-    embaralhar();
-    // int s = sortear(sorteados);
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     pergSort[i] = banco[s];
-    //     //respSort[i] = respostas[s];
-    //     sorteados[i] = s;
-    // }
 
+bool verificarResposta()
+{
+    return digitalRead(sim) == LOW || digitalRead(nao) == LOW;
+}
+
+void perguntas()
+{
     for (int i = 0; i < 5; i++)
     {
         int s = sorteados[i];
-        //lcd_1.clear();
         const char *quest = banco[s];
         const char *resposta = respostas[s];
-        // const char *quest = pergSort[i];
+
         lcd_1.clear();
         exibir(quest);
         delay(500);
         lcd_1.clear();
         lcd_1.setCursor(0, 1);
         lcd_1.print("SIM ou NAO?");
-        delay(500);
-
-        while (true)
+        delay(300);
+        bool respostaRecebida = false;
+        int seg = millis();
+        int total = 15000;
+        while (!respostaRecebida)
         {
-            int seg = millis();
-            int total = 15000;
-            while (true)
+            int resto = total - (millis() - seg);
+            sprintf(buffer, "Tempo: %d ", resto / 1000);
+            lcd_1.setCursor(0, 0);
+            lcd_1.print(buffer);
+            int btnSim = digitalRead(sim);
+            int btnNao = digitalRead(nao);
+            if (verificarResposta())
             {
-                int resto = total - (millis() - seg);
-                sprintf(buffer, "Tempo: %d s", resto / 1000);
-                lcd_1.setCursor(0, 0);
-                lcd_1.print(buffer);
-                if (resto == 10000)
-                {
-                    musica(5);
-                }
-                if (resto <= 0)
-                {
-                    if (chance == 1)
-                    {
-                        lcd_1.print("Vida extra!");
-                        musica(4);
-                        RESET;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                    lcd_1.clear();
-                    lcd_1.print("Tempo esgotado!");
-                    musica(6);
-                }
-                int btnSim = digitalRead(sim);
-                int btnNao = digitalRead(nao);
-                // while (btnSim == 0 || btnNao == 0)
-                // {
+                respostaRecebida = true;
                 if (btnSim == 0)
                 {
                     resp = "s";
-                    chamada(resp, resposta);
+                    //lcd_1.clear();
+                    lcd_1.setCursor(0, 1);
+                    lcd_1.print("*SIM ou NAO");
+                    delay(300);
                 }
                 if (btnNao == 0)
                 {
                     resp = "n";
-                    chamada(resp, resposta);
+                    //lcd_1.clear();
+                    lcd_1.setCursor(0, 1);
+                    lcd_1.print("SIM ou *NAO");
+                    delay(300);
                 }
-                // if (verificar(resp, resposta))
-                // {
-                //     lcd_1.clear();
-                //     lcd_1.setCursor(0, 0);
-                //     lcd_1.print("Correto!");
-                //     delay(1000);
-                // }
-                // else
-                // {
-                //     lcd_1.clear();
-                //     lcd_1.setCursor(0, 0);
-                //     lcd_1.print("Errado!");
-                //     delay(1000);
-                //     lcd_1.clear();
-                //     lcd_1.setCursor(0, 0);
-                //     lcd_1.print("    GAME OVER!");
-                //     musica(4);
-                //     delay(400);
-                //     RESET;
-                // }
-
-                // }
-                // if (verificar(resp, resposta))
-                // {
-                //     lcd_1.clear();
-                //     lcd_1.setCursor(0, 0);
-                //     lcd_1.print("Correto!");
-                //     delay(300);
-                // }
-                // else
-                // {
-                //     lcd_1.clear();
-                //     lcd_1.setCursor(0, 0);
-                //     lcd_1.print("Errado!");
-                //     delay(300);
-                //     if (chance == 1)
-                //     {
-                //         lcd_1.clear();
-                //         lcd_1.setCursor(0, 0);
-                //         lcd_1.print("Chance extra!");
-                //         chance = 0;
-                //         musica(2);
-                //     }
-                //     else
-                //     {
-                //         lcd_1.clear();
-                //         lcd_1.setCursor(0, 0);
-                //         lcd_1.print("    GAME OVER!");
-                //         musica(4);
-                //         // delay(400);
-                //         RESET;
-                //     }
-                // }
+                chamada(resp, resposta);
+                break;
             }
-            // if (verificar(resp, resposta))
+            // a musica de tempo esgotando toca quando faltar 10 segundos
+            // Porém isso paralisa completamente o código
+
+            if (resto == 10000)
+            {
+                // musica(5);
+                // tocar aviso de tempo esgotando, sem paralisar o código
+                tone(buzzer, 500, 100);
+            }
+            if (resto <= 0)
+            {
+                lcd_1.clear();
+                lcd_1.print("Tempo esgotado!");
+                delay(300);
+                if (chance == 1)
+                {
+                    lcd_1.clear();
+                    lcd_1.print("Vida extra!");
+                    musica(2);
+                    // RESET;
+                }
+                else
+                {
+                    lcd_1.clear();
+                    lcd_1.print("GAME OVER!");
+                    musica(4);
+                    delay(400);
+                    RESET;
+                }
+                // else
+                // {
+                //     break;
+                // }
+                // lcd_1.clear();
+                // lcd_1.print("Tempo esgotado!");
+                // musica(6);
+            }
+        }
+    }
+}
+
+// void perguntas()
+// {
+//     embaralhar();
+//     for (int i = 0; i < 5; i++)
+//     {
+//         int s = sorteados[i];
+//         //lcd_1.clear();
+//         const char *quest = banco[s];
+//         const char *resposta = respostas[s];
+//         lcd_1.clear();
+//         exibir(quest);
+//         delay(500);
+//         lcd_1.clear();
+//         lcd_1.setCursor(0, 1);
+//         lcd_1.print("SIM ou NAO?");
+//         delay(500);
+
+//         int seg = millis();
+//         int total = 15000;
+//         while (true)
+//         {
+//             int resto = total - (millis() - seg);
+//             sprintf(buffer, "Tempo: %d s", resto / 1000);
+//             lcd_1.setCursor(0, 0);
+//             lcd_1.print(buffer);
+//             if (resto == 10000)
+//             {
+//                 musica(5);
+//             }
+//             if (resto <= 0)
+//             {
+//                 if (chance == 1)
+//                 {
+//                     lcd_1.print("Vida extra!");
+//                     musica(4);
+//                     RESET;
+//                 }
+//                 else
+//                 {
+//                     break;
+//                 }
+//                 lcd_1.clear();
+//                 lcd_1.print("Tempo esgotado!");
+//                 musica(6);
+//             }
+//             int btnSim = digitalRead(sim);
+//             int btnNao = digitalRead(nao);
+//             // while (btnSim == 0 || btnNao == 0)
+//             // {
+//             if (btnSim == 0)
+//             {
+//                 resp = "s";
+//                 chamada(resp, resposta);
+//             }
+//             if (btnNao == 0)
+//             {
+//                 resp = "n";
+//                 chamada(resp, resposta);
+//             }
+//         }
+//     }
+
+//     // bool respostaRecebida = false;
+
+//     // while (!respostaRecebida)
+//     // {
+//     //     // ... (código do contador)
+
+//     //     if (btnSim == 0 || btnNao == 0)
+//     //     {
+//     //         respostaRecebida = true;
+//     //         chamada(resp, resposta);
+//     //         break;
+//     //     }
+//     // }
+
+//     // respostaRecebida = false; // Reinicia a flag para a próxima pergunta
+// }
+
+void fase2()
+{
+    intro2();
+    //delay(500);
+    // int round = 0;
+    // if (round == 0)
+    // {
+    embaralhar();
+    perguntas();
+    // round = 1;
+    // }
+    // else if (round == 1)
+    // {
+    // Pergunta final
+    // lcd_1.clear();
+    // lcd_1.setCursor(0, 0);
+    // lcd_1.print("Voce e um robo?");
+    // lcd_1.setCursor(4, 1);
+    // lcd_1.print("S ou N?");
+    // delay(1000);
+    // int btnSim = digitalRead(sim);
+    // int btnNao = digitalRead(nao);
+    // if (btnSim == 0)
+    // {
+    //     resp = "s";
+    // }
+    // if (btnNao == 0)
+    // {
+    //     resp = "n";
+    // }
+    // if (resp == "n")
+    // {
+    //     lcd_1.clear();
+    //     lcd_1.setCursor(0, 0);
+    //     lcd_1.print("Correto!");
+    //     delay(1000);
+    // }
+    // else
+    // {
+    //     lcd_1.clear();
+    //     lcd_1.setCursor(0, 0);
+    //     lcd_1.print("Errado!");
+    //     delay(500);
+    //     if (chance == 1)
+    //     {
+    //         lcd_1.clear();
+    //         lcd_1.setCursor(0, 0);
+    //         lcd_1.print("ROBOS NAO");
+    //         lcd_1.setCursor(0, 0);
+    //         lcd_1.print("TEM CHANCES!");
+    //         chance = 0;
+    //         musica(2);
+    //     }
+    //     else
+    //     {
+    //         lcd_1.clear();
+    //         lcd_1.setCursor(0, 0);
+    //         lcd_1.print("GAME OVER!");
+    //         musica(4);
+    //         delay(400);
+    //         RESET;
+    //     }
+    // lcd_1.clear();
+    // lcd_1.setCursor(0, 0);
+    // lcd_1.print("Errado!");
+    // delay(1000);
+    // lcd_1.clear();
+    // lcd_1.setCursor(4, 0);
+    // lcd_1.print("GAME OVER!");
+    // musica(4);
+    // delay(400);
+    // RESET;
+    // }
+    // }
+}
+
+int fase3()
+{
+    lcd_1.clear();
+    //const char *quest = "Voce e um robo?";
+    //exibir(quest);
+    lcd_1.setCursor(0, 0);
+    lcd_1.print("VOCE E UM ROBO?");
+    lcd_1.setCursor(0, 1);
+    lcd_1.print("SIM ou NAO?");
+    delay(2000);
+    lcd_1.clear();
+    lcd_1.setCursor(0, 1);
+    lcd_1.print("SIM ou NAO?");
+    delay(300);
+    bool respostaRecebida = false;
+    int seg = millis();
+    int total = 15000;
+    while (!respostaRecebida)
+    {
+        int resto = total - (millis() - seg);
+        sprintf(buffer, "Tempo: %d ", resto / 1000);
+        lcd_1.setCursor(0, 0);
+        lcd_1.print(buffer);
+        int btnSim = digitalRead(sim);
+        int btnNao = digitalRead(nao);
+        if (verificarResposta())
+        {
+            respostaRecebida = true;
+            if (btnSim == 0)
+            {
+                resp = "s";
+                //lcd_1.clear();
+                lcd_1.setCursor(0, 1);
+                lcd_1.print("*SIM ou NAO");
+                delay(300);
+            }
+            if (btnNao == 0)
+            {
+                resp = "n";
+                //lcd_1.clear();
+                lcd_1.setCursor(0, 1);
+                lcd_1.print("SIM ou *NAO");
+                delay(300);
+            }
+            const char *resposta = "n";
+            chamada(resp, resposta);
+            break;
+        }
+        // a musica de tempo esgotando toca quando faltar 10 segundos
+        // Porém isso paralisa completamente o código
+
+        if (resto == 10000)
+        {
+            // musica(5);
+            // tocar aviso de tempo esgotando, sem paralisar o código
+
+            // ARRUMAR
+            tone(buzzer, 500, 100);
+        }
+        if (resto <= 0)
+        {
+            lcd_1.clear();
+            lcd_1.print("Tempo esgotado!");
+            delay(500);
+            // if (chance == 1)
             // {
             //     lcd_1.clear();
-            //     lcd_1.setCursor(0, 0);
-            //     lcd_1.print("Correto!");
-            //     delay(1000);
+            //     lcd_1.print("Chance extra!");
+            //     musica(2);
+            //     // RESET;
             // }
             // else
             // {
-            //     lcd_1.clear();
-            //     lcd_1.setCursor(0, 0);
-            //     lcd_1.print("Errado!");
-            //     delay(1000);
-            //     if (chance == 1)
-            //     {
-            //         lcd_1.clear();
-            //         lcd_1.setCursor(0, 0);
-            //         lcd_1.print("Chance extra!");
-            //         chance = 0;
-            //         musica(2);
-            //     }
-            //     else
-            //     {
-            //         lcd_1.clear();
-            //         lcd_1.setCursor(0, 0);
-            //         lcd_1.print("    GAME OVER!");
-            //         musica(4);
-            //         delay(400);
-            //         RESET;
-            //     }
-            // }
-        }
-    }
-    return 0;
-}
-
-int fase2()
-{
-    intro2();
-    delay(500);
-    int round = 0;
-    if (round == 0)
-    {
-        // embaralhar();
-        perguntas();
-        round = 1;
-    }
-    else if (round == 1)
-    {
-        // Pergunta final
-        lcd_1.clear();
-        lcd_1.setCursor(0, 0);
-        lcd_1.print("Voce e um robo?");
-        lcd_1.setCursor(0, 1);
-        lcd_1.print("S ou N?");
-        delay(1000);
-        int btnSim = digitalRead(sim);
-        int btnNao = digitalRead(nao);
-        if (btnSim == 0)
-        {
-            resp = "s";
-        }
-        if (btnNao == 0)
-        {
-            resp = "n";
-        }
-        if (resp == "n")
-        {
-            lcd_1.clear();
-            lcd_1.setCursor(0, 0);
-            lcd_1.print("Correto!");
-            delay(1000);
-        }
-        else
-        {
-            lcd_1.clear();
-            lcd_1.setCursor(0, 0);
-            lcd_1.print("Errado!");
-            delay(1000);
             lcd_1.clear();
             lcd_1.setCursor(4, 0);
             lcd_1.print("GAME OVER!");
             musica(4);
-            delay(400);
+            // delay(400);
             RESET;
+            // }
         }
     }
     return 0;
 }
-
 // Inicia ou reinicia o jogo
 void reinicia()
 {
@@ -966,7 +1078,7 @@ void loop()
 
     // lcd_1.clear();
     //jogo = 1;
-    passei = 1;
+    passei = 2;
     if (jogo == 0)
     {
         lcd_1.setCursor(3, 0);
@@ -987,7 +1099,62 @@ void loop()
             fase2();
             passei = 2;
         }
-        else if (passei = 2)
+        // coloque if se continuar bugando no final.
+        else if (passei == 2)
+        {
+            fase3();
+            passei = 3;
+            // lcd_1.clear();
+            // lcd_1.setCursor(0, 0);
+            // lcd_1.print("Voce e um robo?");
+            // lcd_1.setCursor(4, 1);
+            // lcd_1.print("S ou N?");
+            // delay(500);
+            // int btnSim = digitalRead(sim);
+            // int btnNao = digitalRead(nao);
+            // if (btnSim == 0)
+            // {
+            //     resp = "s";
+            // }
+            // if (btnNao == 0)
+            // {
+            //     resp = "n";
+            // }
+            // if (resp == "n")
+            // {
+            //     lcd_1.clear();
+            //     lcd_1.setCursor(0, 0);
+            //     lcd_1.print("Correto!");
+            //     delay(1000);
+            // }
+            // else
+            // {
+            //     lcd_1.clear();
+            //     lcd_1.setCursor(0, 0);
+            //     lcd_1.print("Errado!");
+            //     delay(500);
+            //     if (chance == 1)
+            //     {
+            //         lcd_1.clear();
+            //         lcd_1.setCursor(0, 0);
+            //         lcd_1.print("ROBOS NAO");
+            //         lcd_1.setCursor(0, 0);
+            //         lcd_1.print("TEM CHANCES!");
+            //         chance = 0;
+            //         musica(2);
+            //     }
+            //     else
+            //     {
+            //         lcd_1.clear();
+            //         lcd_1.setCursor(0, 0);
+            //         lcd_1.print("GAME OVER!");
+            //         musica(4);
+            //         delay(400);
+            //         RESET;
+            //     }
+            // }
+        }
+        else if (passei = 3)
         {
             lcd_1.clear();
             lcd_1.setCursor(4, 0);
