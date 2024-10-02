@@ -597,15 +597,15 @@ const char *banco[15] = {
     "Cachoalot e o maior animal do mundo?",
     "O tigre e o maior felino do mundo?",
     "A Amazonia e a maior floresta do mundo?"};
-    // "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
-    // "A gravidade foi descoberta por Albert Einstein?",
-    // "A teoria do Big Bang foi proposta por Stephen Hawking?",
-    // "A teoria da relatividade foi proposta por Isaac Newton?",
-    // "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
-    // "A teoria da evolucao foi proposta por Charles Darwin?",
-    // "A primeira viagem ao espaco foi realizada por um astronauta americano?",
-    // "A Teoria da Relatividade foi proposta no seculo XIX?",
-    // "O deserto do Saara e o maior deserto do mundo?"};
+// "A Guerra Fria ocorreu apos a Segunda Guerra Mundial?",
+// "A gravidade foi descoberta por Albert Einstein?",
+// "A teoria do Big Bang foi proposta por Stephen Hawking?",
+// "A teoria da relatividade foi proposta por Isaac Newton?",
+// "A primeira mulher a ganhar um premio Nobel foi Marie Curie?",
+// "A teoria da evolucao foi proposta por Charles Darwin?",
+// "A primeira viagem ao espaco foi realizada por um astronauta americano?",
+// "A Teoria da Relatividade foi proposta no seculo XIX?",
+// "O deserto do Saara e o maior deserto do mundo?"};
 
 // Conferir as respostas
 const char *respostas[15] = {
@@ -626,11 +626,11 @@ const char *respostas[15] = {
     "s"};
 // const char *respostas[18] = {"s", "s", "s", "n", "s", "n", "s", "s", "s", "s", "n", "n", "n", "s", "n", "n", "n", "n"};
 
-const char *pergSort[5] = {};
+// const char *pergSort[5] = {};
 
-const char *respSort[5] = {};
+// const char *respSort[5] = {};
 
-int *sorteados [5] = {};
+int sorteados[5] = {};
 
 char *resp = " ";
 
@@ -659,7 +659,7 @@ int intro2()
 // 	if (comp == 0){
 // 		sorteado = true;
 // 	}
-//   }	
+//   }
 //   return s;
 // }
 
@@ -699,30 +699,80 @@ int intro2()
 //     }
 // }
 
-void exibir(const char *q)
+void embaralhar()
 {
-    // Exibir a questao com scroll
-    //delay(1000);
-    lcd_1.clear();
-    lcd_1.setCursor(0, 0);
-    lcd_1.print(q);
-    for (int i = 0; i < strlen(q) - 16; i++)
+    // Cria um array de booleanos para marcar as perguntas já sorteadas
+    bool marcadas[15];
+    for (int i = 0; i < 15; i++)
     {
-        lcd_1.scrollDisplayLeft();
-        delay(500);
+        marcadas[i] = false;
+    }
+
+    // int a;
+    //int total = 5; // Número de perguntas a serem sorteadas
+
+    for (int j = 0; j < 5; j++)
+    {
+        int indice = random(15);
+        if (!marcadas[indice])
+        {
+            sorteados[j] = indice;
+            marcadas[indice] = true;
+            delay(1000);
+        }
+        else
+        {
+            j--;
+        }
+    }
+}
+
+// void exibir(const char *q)
+// {
+//     // Exibir a questao com scroll
+//     //delay(1000);
+//     lcd_1.clear();
+//     lcd_1.setCursor(5, 0);
+//     lcd_1.print(q);
+//     for (int i = 0; i < strlen(q) - 16; i++)
+//     {
+//         lcd_1.scrollDisplayLeft();
+//         delay(500);
+//     }
+// }
+
+void exibir(const char *pergunta)
+{
+    // lcd_1.clear();
+    lcd_1.setCursor(2, 0);
+    lcd_1.print(pergunta);
+    if (strlen(pergunta) > 16)
+    {
+        // Aqui vamos movimentar todo o display X posições para a ESQUERDA.
+        // for (int posi_LCD = 0; posi_LCD < 36; posi_LCD++)
+        // {
+        //     //lcd_1.setCursor(4, 1);
+        //     lcd_1.scrollDisplayLeft(); //Essa é a função que faz as letras se deslocarem
+        //                                // lcd_1.autoscroll();
+        //     delay(250);                // Quanto menor o tempo, mais rápido será o deslocamento
+        // }
+        // Scroll da pergunta (-16 para caber no display)
+        for (int i = 0; i < strlen(pergunta) - 7; i++)
+        {
+            lcd_1.scrollDisplayLeft();
+            delay(300); // Quanto menor o tempo, mais rápido será o deslocamento
+        }
     }
 }
 
 bool verificar(const char *respUsuario, const char *respCorreta)
 {
-    return strcmp(respUsuario, respCorreta ) == 0;
+    return strcmp(respUsuario, respCorreta) == 0;
 }
-
-
 
 int perguntas()
 {
-    // embaralhar();
+    embaralhar();
     // int s = sortear(sorteados);
     // for (int i = 0; i < 5; i++)
     // {
@@ -733,11 +783,19 @@ int perguntas()
 
     for (int i = 0; i < 5; i++)
     {
+        int s = sorteados[i];
+        //lcd_1.clear();
+        const char *quest = banco[s];
+        const char *resposta = respostas[s];
+        // const char *quest = pergSort[i];
         lcd_1.clear();
-        const char *quest = pergSort[i];
         exibir(quest);
+        delay(500);
+        lcd_1.clear();
         lcd_1.setCursor(0, 1);
         lcd_1.print("SIM ou NAO?");
+        delay(500);
+
         while (true)
         {
             int seg = millis();
@@ -770,69 +828,101 @@ int perguntas()
                 }
                 int btnSim = digitalRead(sim);
                 int btnNao = digitalRead(nao);
-                while (btnSim == 0 || btnNao == 0)
+                // while (btnSim == 0 || btnNao == 0)
+                // {
+                if (btnSim == 0)
                 {
-                    if (btnSim == 0)
-                    {
-                        resp = "s";
-                    }
-                    if (btnNao == 0)
-                    {
-                        resp = "n";
-                    }
-                    if (verificar(resp, respSort[i]))
-                    {
-                        lcd_1.clear();
-                        lcd_1.setCursor(0, 0);
-                        lcd_1.print("Correto!");
-                        delay(1000);
-                    }
-                    else
-                    {
-                        lcd_1.clear();
-                        lcd_1.setCursor(0, 0);
-                        lcd_1.print("Errado!");
-                        delay(1000);
-                        lcd_1.clear();
-                        lcd_1.setCursor(0, 0);
-                        lcd_1.print("    GAME OVER!");
-                        musica(4);
-                        delay(400);
-                        RESET;
-                    }
+                    resp = "s";
                 }
-            }
-            if (verificar(resp, respSort[i]))
-            {
-                lcd_1.clear();
-                lcd_1.setCursor(0, 0);
-                lcd_1.print("Correto!");
-                delay(1000);
-            }
-            else
-            {
-                lcd_1.clear();
-                lcd_1.setCursor(0, 0);
-                lcd_1.print("Errado!");
-                delay(1000);
-                if (chance == 1)
+                if (btnNao == 0)
+                {
+                    resp = "n";
+                }
+                // if (verificar(resp, resposta))
+                // {
+                //     lcd_1.clear();
+                //     lcd_1.setCursor(0, 0);
+                //     lcd_1.print("Correto!");
+                //     delay(1000);
+                // }
+                // else
+                // {
+                //     lcd_1.clear();
+                //     lcd_1.setCursor(0, 0);
+                //     lcd_1.print("Errado!");
+                //     delay(1000);
+                //     lcd_1.clear();
+                //     lcd_1.setCursor(0, 0);
+                //     lcd_1.print("    GAME OVER!");
+                //     musica(4);
+                //     delay(400);
+                //     RESET;
+                // }
+
+                // }
+                if (verificar(resp, resposta))
                 {
                     lcd_1.clear();
                     lcd_1.setCursor(0, 0);
-                    lcd_1.print("Chance extra!");
-                    chance = 0;
-                    musica(2);
+                    lcd_1.print("Correto!");
+                    delay(300);
                 }
                 else
                 {
                     lcd_1.clear();
                     lcd_1.setCursor(0, 0);
-                    lcd_1.print("    GAME OVER!");
-                    musica(4);
-                    delay(400);
-                    RESET;
+                    lcd_1.print("Errado!");
+                    delay(300);
+                    if (chance == 1)
+                    {
+                        lcd_1.clear();
+                        lcd_1.setCursor(0, 0);
+                        lcd_1.print("Chance extra!");
+                        chance = 0;
+                        musica(2);
+                    }
+                    else
+                    {
+                        lcd_1.clear();
+                        lcd_1.setCursor(0, 0);
+                        lcd_1.print("    GAME OVER!");
+                        musica(4);
+                        // delay(400);
+                        RESET;
+                    }
                 }
             }
+            // if (verificar(resp, resposta))
+            // {
+            //     lcd_1.clear();
+            //     lcd_1.setCursor(0, 0);
+            //     lcd_1.print("Correto!");
+            //     delay(1000);
+            // }
+            // else
+            // {
+            //     lcd_1.clear();
+            //     lcd_1.setCursor(0, 0);
+            //     lcd_1.print("Errado!");
+            //     delay(1000);
+            //     if (chance == 1)
+            //     {
+            //         lcd_1.clear();
+            //         lcd_1.setCursor(0, 0);
+            //         lcd_1.print("Chance extra!");
+            //         chance = 0;
+            //         musica(2);
+            //     }
+            //     else
+            //     {
+            //         lcd_1.clear();
+            //         lcd_1.setCursor(0, 0);
+            //         lcd_1.print("    GAME OVER!");
+            //         musica(4);
+            //         delay(400);
+            //         RESET;
+            //     }
+            // }
         }
     }
     return 0;
@@ -841,7 +931,7 @@ int perguntas()
 int fase2()
 {
     intro2();
-    delay(1000);
+    delay(500);
     int round = 0;
     if (round == 0)
     {
@@ -882,8 +972,8 @@ int fase2()
             lcd_1.print("Errado!");
             delay(1000);
             lcd_1.clear();
-            lcd_1.setCursor(0, 0);
-            lcd_1.print("    GAME OVER!");
+            lcd_1.setCursor(4, 0);
+            lcd_1.print("GAME OVER!");
             musica(4);
             delay(400);
             RESET;
@@ -942,10 +1032,10 @@ void loop()
     passei = 1;
     if (jogo == 0)
     {
-        lcd_1.setCursor(0, 0);
-        lcd_1.print("   Bem-vindo.");
-        lcd_1.setCursor(0, 1);
-        lcd_1.print("  Pressione GO!");
+        lcd_1.setCursor(3, 0);
+        lcd_1.print("Bem-vindo.");
+        lcd_1.setCursor(2, 1);
+        lcd_1.print("Pressione GO!");
     }
     if (jogo == 1)
     {
@@ -963,10 +1053,10 @@ void loop()
         else if (passei = 2)
         {
             lcd_1.clear();
-            lcd_1.setCursor(0, 0);
-            lcd_1.print("    PARABENS!");
-            lcd_1.setCursor(0, 1);
-            lcd_1.print("  VOCE VENCEU!");
+            lcd_1.setCursor(4, 0);
+            lcd_1.print("PARABENS!");
+            lcd_1.setCursor(2, 1);
+            lcd_1.print("VOCE VENCEU!");
             musica(5);
             delay(400);
             RESET;
