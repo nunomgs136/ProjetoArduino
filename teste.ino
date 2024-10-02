@@ -620,41 +620,73 @@ int intro2()
     return 0;
 }
 
-void embaralhar()
-{
-    // Cria um array de booleanos para marcar as perguntas já sorteadas
-    bool marcadas[18];
-    for (int i = 0; i <  18; i++)
-    {
-        marcadas[i] = false;
-    }
-    int total = 5; // Número de perguntas a serem sorteadas
-    int selecionado = 0;
-    for (int j = 0; j < total; j++)
-    {
-        int indice =  random(18);
-        if (!marcadas[indice])
-        {
-            pergSort[selecionado] = banco[indice];
-            respSort[selecionado] = respostas[indice];
-            marcadas[indice] = true;
+int sortear(int sorteados[]){
+  int s;
+  bool sorteado = false;
+  int comp;
+  while(!sorteado){
+	comp = 0;
+	s = random(0, 10);
+    for(int i  = 0; i < 5; i++){
+		if(sorteados[i] == s){
+			comp = 1;
         }
-    }
+	}
+	if (comp == 0){
+		sorteado = true;
+	}
+  }	
+  return s;
 }
 
-void exibir(const char *pergunta)
+// void embaralhar()
+// {
+//     // Cria um array de booleanos para marcar as perguntas já sorteadas
+//     bool marcadas[18];
+//     for (int i = 0; i < 18; i++)
+//     {
+//         marcadas[i] = false;
+//     }
+
+//     int a;
+//     int total = 5; // Número de perguntas a serem sorteadas
+
+//     for(int j = 0; j < total; j++)
+//     {
+//         int indice =  random(18);
+//         if (!marcadas[indice])
+//         {
+//             a = 1;
+//             pergSort[j] = banco[indice];
+//             // respSort[j] = respostas[indice];
+//             marcadas[indice] = true;
+//             delay(1000);
+//         }
+//         else
+//         {
+//             j--;
+//         }
+
+//         // if (a == 1)
+//         // {
+//         //     respSort[j] = respostas[indice];
+//         //     a = 0;
+//         // }
+//     }
+// }
+
+void exibir(const char *q)
 {
-    // Exibir a pergunta com scroll
+    // Exibir a questao com scroll
     //delay(1000);
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
-    lcd_1.print(pergunta);
-    for (int i = 0; i < strlen(pergunta) - 16; i++)
+    lcd_1.print(q);
+    for (int i = 0; i < strlen(q) - 16; i++)
     {
         lcd_1.scrollDisplayLeft();
         delay(500);
     }
-    //delay(1000);
 }
 
 bool verificar(const char *respostaUsuario, const char *respostaCorreta)
@@ -662,9 +694,18 @@ bool verificar(const char *respostaUsuario, const char *respostaCorreta)
     return strcmp(respostaUsuario, respostaCorreta ) == 0;
 }
 
+int sorteados[5] = {};
 int perguntas()
 {
-    embaralhar();
+    // embaralhar();
+    int s = sortear(sorteados);
+    for (int i = 0; i < 5; i++)
+    {
+        pergSort[i] = banco[s];
+        //respSort[i] = respostas[s];
+        sorteados[i] = s;
+    }
+
     for (int i = 0; i < 5; i++)
     {
         lcd_1.clear();
@@ -704,14 +745,6 @@ int perguntas()
                 }
                 int btnSim = digitalRead(sim);
                 int btnNao = digitalRead(nao);
-                // if (btnSim == 0)
-                // {
-                //     resp = "s";
-                // }
-                // if (btnNao == 0)
-                // {
-                //     resp = "n";
-                // }
                 while (btnSim == 0 || btnNao == 0)
                 {
                     if (btnSim == 0)
@@ -831,7 +864,6 @@ int fase2()
             RESET;
         }
     }
-
     return 0;
 }
 
