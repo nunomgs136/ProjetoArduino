@@ -691,14 +691,14 @@ void perguntas()
                 respostaRecebida = true;
                 if (btnSim == 0)
                 {
-                    resp = 's';
+                    resp = "s";
                     lcd_1.setCursor(2, 1);
                     lcd_1.print("*SIM ou NAO");
                     delay(300);
                 }
                 if (btnNao == 0)
                 {
-                    resp = 'n';
+                    resp = "n";
                     lcd_1.setCursor(2, 1);
                     lcd_1.print("SIM ou *NAO");
                     delay(300);
@@ -785,14 +785,14 @@ void fase3()
             respostaRecebida = true;
             if (btnSim == 0)
             {
-                resp = 's';
+                resp = "s";
                 lcd_1.setCursor(2, 1);
                 lcd_1.print("*SIM ou NAO");
                 delay(300);
             }
             if (btnNao == 0)
             {
-                resp = 'n';
+                resp = "n";
                 lcd_1.setCursor(2, 1);
                 lcd_1.print("SIM ou *NAO");
                 delay(300);
