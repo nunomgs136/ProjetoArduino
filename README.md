@@ -2,8 +2,10 @@
 
 ## Introdução: 
 O projeto foi feito para desenvolver um jogo de três fases utilizando um circuito que esteja dentro dos limites de um Arduino UNO e um Liquid Crystal Display(LCD), com programação feita com a linguagem C++. A primeira fase do jogo é um jogo da memória, no qual é mostrada para o usuário uma sequência de 10 luzes que são feitas aleatoriamente, então desse jeito, a cada vez que o usuário começar o jogo, será feita uma sequência de luzes, contando também para quando for usado o botão de reiniciar ou quando o jogador perder o jogo. Se o jogador acertar a sequência, será tocado um som através de um buzzer e o jogador progredirá para a segunda fase. Caso contrário, será reiniciado o jogo. 
+
 A segunda fase é um jogo de perguntas e respostas. Todas as questões feitas tem respostas de sim ou não. Nesta fase, o jogador deve ter uma sequência de 5 respostas corretas para poder passar para a próxima fase. As perguntas são escolhidas aleatoriamente de um banco de 15 questões. Além disso, o jogador tem a oportunidade de pular uma questão sem perder o jogo, assim continuando da mesma marca na qual estava. Se o jogador responder incorretamente alguma questão, ele perderá o jogo, tendo que reiniciar desde a primeira fase. Se o jogador responder corretamente, será tocado um som após cada resposta correta, além de outro som no caso do jogador conseguir progredir de fase. 
- 	Ademais se tem a terceira fase. Nesta fase, o jogador terá que responder uma pergunta fixa, ou seja, é a mesma para todas as vezes que o jogo for jogado. A pergunta também será de sim ou não, se o jogador acertar, ele ganhará o jogo, senão, terá que reiniciar da primeira fase.
+
+Ademais se tem a terceira fase. Nesta fase, o jogador terá que responder uma pergunta fixa, ou seja, é a mesma para todas as vezes que o jogo for jogado. A pergunta também será de sim ou não, se o jogador acertar, ele ganhará o jogo, senão, terá que reiniciar da primeira fase.
 
 
 ## Metodologia:
