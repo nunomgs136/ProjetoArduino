@@ -46,6 +46,7 @@
 #define RESET asm("jmp (0x0000)")
 // "Volta no loop"
 
+// Biblioteca necessária para o LCD
 #include <LiquidCrystal.h>
 
 // Entradas
