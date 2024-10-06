@@ -1,8 +1,20 @@
 // C++ code
-// Por: Marjorie Luize Martins Costa e Nuno Martins Guilhermino da Silva
-// Créditos pelas músicas: https://github.com/robsoncouto/arduino-songs
+//
+// Segundo semestre de 2024
+//
+// Por:
+// Marjorie Luize Martins Costa
+// Nuno Martins Guilhermino da Silva
+//
+// Disciplina:
+// Computação Móvel
+//
 // Github do projeto:
 // https://github.com/nunomgs136/ProjetoArduino/
+//
+// Créditos pelas músicas:
+// https://github.com/robsoncouto/arduino-songs
+//
 // Notas a serem utilizadas
 #define NOTE_B0 31
 #define NOTE_C1 33
@@ -150,9 +162,11 @@ int acertou[] = {
     REST,
     4,
 };
+
 // Tipo 2, tempo 100
 int pulou[] = { // Pulo da gaita
     NOTE_C5, 4, NOTE_G4, 8, NOTE_AS4, 4};
+
 // Tipo 3, tempo 225
 int errou[] = {
     // DOOM
@@ -181,6 +195,7 @@ int errou[] = {
     NOTE_AS2,
     8,
 };
+
 // Tipo 4, tempo 200
 int desistiu[] = {
     // Mario game over
@@ -209,6 +224,7 @@ int desistiu[] = {
     NOTE_E4,
     -2,
 };
+
 // Tipo 5, tempo 140
 int venceu[] = {
     // Take on me
@@ -245,6 +261,7 @@ int venceu[] = {
     NOTE_B5,
     8,
 };
+
 // Tipo 6, tempo 85
 int acabou[] = {
     // Game of thrones
@@ -262,14 +279,14 @@ int acabou[] = {
     8,
 };
 
+// Função para tocar a música
 int musica(int tipo)
 {
     // Testando com 30
     int melodia[40] = {0}; // Inicializa todos os elementos com 0
-
+    // Copia os elementos correspondente ao tipo de música para melodia
     if (tipo == 1)
     {
-        // Copia os elementos para melodia, até o tamanho de desistiu
         for (int i = 0; i < sizeof(acertou) / sizeof(acertou[0]); i++)
         {
             melodia[i] = acertou[i];
@@ -320,6 +337,7 @@ int musica(int tipo)
     {
         return 1;
     }
+
     // Calcula o número de notas na melodia, considerando que cada nota ocupa 2 posições no array: uma para a altura e outra para a duração.
     int notes = sizeof(melodia) / sizeof(melodia[0]) / 2;
     // Calcula a duração de uma semínima em milissegundos, com base no tempo (bpm).
@@ -360,10 +378,12 @@ int res[10];
 // Comparador das sequencias
 bool compara(int sequencia[], int resposta[], int tamanho)
 {
+    // Compara as sequencias
     for (int i = 0; i < tamanho; i++)
     {
         if (sequencia[i] != resposta[i])
         {
+            // Se forem diferentes, retorna falso
             return false;
         }
     }
@@ -371,10 +391,13 @@ bool compara(int sequencia[], int resposta[], int tamanho)
 }
 
 // Gerador aleatorio para a sequencia (Deve completar o vetor com 0 ou 1 distribuidos alatoriamente)
-int gerador(int sequencia[])
+void gerador(int sequencia[])
 {
+    Serial.println("______________");
+    // Gera a sequencia de 0 e 1 aleatoriamente, atribuindo a sequencia 10 vezes
     for (int i = 0; i < 10; i++)
     {
+        // Gera um número aleatório entre 0 e 1
         int num = random(2);
         if (num == 0)
         {
@@ -384,14 +407,13 @@ int gerador(int sequencia[])
         {
             sequencia[i] = 1;
         }
-    }
-    for (int i = 0; i < 10; i++)
-    {
+        // Imprime a sequencia
         Serial.println(sequencia[i]);
     }
-    return 0;
+    Serial.println("______________");
 }
 
+// Responder a sequencia
 int responder(int resposta[])
 {
     lcd_1.clear();
@@ -401,7 +423,8 @@ int responder(int resposta[])
     lcd_1.print("Repita a serie");
     delay(1000);
     lcd_1.clear();
-    while (i <= 10)
+    // Enquanto o i for menor que 10 (contagem de respostas)
+    while (i < 10)
     {
         int btnSim = digitalRead(sim);
         int btnNao = digitalRead(nao);
@@ -409,13 +432,17 @@ int responder(int resposta[])
         sprintf(buffer, "Sequencia: %d", contador);
         lcd_1.print(buffer);
 
+        // Verifica se o botão foi pressionado
         if (btnSim == 0)
         {
+            // Atribui a resposta
             resposta[i] = 0;
             digitalWrite(verde, HIGH);
             digitalWrite(vermelho, LOW);
             i++;
+            // Compara as sequencias
             bool comp = compara(seq, res, i);
+            // Se forem diferentes, reinicia
             if (comp == false)
             {
                 contador = 0;
@@ -434,6 +461,7 @@ int responder(int resposta[])
             }
             else
             {
+                // Se forem iguais, continua
                 lcd_1.setCursor(0, 1);
                 sprintf(buffer, "Correto!");
                 lcd_1.print(buffer);
@@ -453,6 +481,7 @@ int responder(int resposta[])
             bool comp = compara(seq, res, i);
             if (comp == false)
             {
+                // Resetando
                 contador = 0;
                 lcd_1.clear();
                 lcd_1.setCursor(3, 0);
@@ -470,9 +499,7 @@ int responder(int resposta[])
             }
             else
             {
-                //lcd_1.clear();
                 lcd_1.setCursor(0, 1);
-
                 sprintf(buffer, "Correto!");
                 lcd_1.print(buffer);
                 contador++;
@@ -482,25 +509,22 @@ int responder(int resposta[])
                 lcd_1.clear();
             }
         }
-
-        if (i == 10)
-        {
-            break;
-        }
     }
+    // Passou
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
-
     sprintf(buffer, "Proxima fase!");
     lcd_1.print(buffer);
     musica(1);
     return 0;
 }
 
+// Acender as luzes de acordo com a sequencia
 int acender(int sequencia[], int tamanho)
 {
     for (int i = 0; i < tamanho; i++)
     {
+        // Se a sequencia for 1, acende o vermelho
         if (sequencia[i] == 1)
         {
             delay(500);
@@ -509,6 +533,7 @@ int acender(int sequencia[], int tamanho)
             delay(1000);
             digitalWrite(vermelho, LOW);
         }
+        // Se a sequencia for 0, acende o verde
         else
         {
             delay(500);
@@ -521,36 +546,32 @@ int acender(int sequencia[], int tamanho)
     delay(1000);
 }
 
-int intro1()
+// Fase 1
+int fase1()
 {
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
     lcd_1.print("Observe a ordem");
     lcd_1.setCursor(3, 1);
     lcd_1.print("das luzes!");
-    return 0;
-}
-
-int fase1()
-{
-    intro1();
     delay(500);
     gerador(seq);
     acender(seq, 10);
-    lcd_1.setCursor(0, 0);
     delay(1000);
     responder(res);
     return 0;
 }
 
-// A contagem de tempo do jogo (Maior que 15 reinicia, em 10 toca a música de tempo esgotando)
+// Vida do jogador
 int chance = 1;
 
 // Vão ser 5 perguntas aleatorias de SIM ou NÃO, além da pergunta final (padrão: "Você é um robô?").
+
+// Banco de perguntas
 const char *banco[15] = {
     "O Sol e uma estrela?",
     "A Lua e um satelite da Terra?",
-    "A Terra e redonda?",
+    "A Terra e plana?",
     "Tomate e um vegetal?",
     "O Japao e um arquipelago?",
     "Os morcegos sao cegos?",
@@ -564,11 +585,11 @@ const char *banco[15] = {
     "O tigre e o maior felino do mundo?",
     "Amazonia e a maior floresta do mundo?"};
 
-// Conferir as respostas
+// Respostas
 const char *respostas[15] = {
     "s",
     "s",
-    "s",
+    "n",
     "n",
     "s",
     "n",
@@ -582,61 +603,77 @@ const char *respostas[15] = {
     "s",
     "s"};
 
+// Perguntas sorteadas
 int sorteados[5] = {};
 
+// Resposta do usuário
 char *resp;
 
+// Marcador para as perguntas já selecionadas
 bool marcadas[15] = {
     false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
+// Embaralhar as perguntas
 void embaralhar()
 {
+    // Sorteia 6 perguntas
     for (int j = 0; j < 6; j++)
     {
+        // Sorteia um índice
         int indice = random(15);
+        // Se a pergunta não foi marcada
         if (!marcadas[indice])
         {
+            // Atribui o índice sorteado ao vetor de perguntas sorteadas
             sorteados[j] = indice;
+            // Marca a pergunta
             marcadas[indice] = true;
         }
         else
         {
+            // Se a pergunta já foi marcada, sorteia novamente
             j--;
         }
     }
 }
 
+// Exibir a pergunta
 void exibir(const char *pergunta)
 {
     lcd_1.setCursor(2, 0);
     lcd_1.print(pergunta);
-    if (strlen(pergunta) > 16)
+    // Se a pergunta for maior que 16 caracteres, desloca a pergunta
+
+    for (int i = 0; i < strlen(pergunta); i++)
     {
-        for (int i = 0; i < strlen(pergunta); i++)
-        {
-            lcd_1.scrollDisplayLeft();
-            delay(300); // Quanto menor o tempo, mais rápido será o deslocamento
-        }
+        // Desloca para a esquerda
+        lcd_1.scrollDisplayLeft();
+        delay(300); // Quanto menor o tempo, mais rápido será o deslocamento
     }
 }
 
+// Verifica se a resposta do usuário é igual a resposta correta
 bool verificar(const char *respUsuario, const char *respCorreta)
 {
+    // Compara as respostas
+    // strcmp retorna 0 se as strings forem iguais
     return strcmp(respUsuario, respCorreta) == 0;
 }
 
+// Chamada da função de verificação
 void chamada(const char *resp, const char *resposta)
 {
+    lcd_1.clear();
+    // Verifica se a resposta do usuário é igual a resposta correta
     if (verificar(resp, resposta))
     {
-        lcd_1.clear();
         lcd_1.setCursor(4, 0);
         lcd_1.print("Correto!");
         musica(1);
     }
+    // Se a resposta estiver errada
     else
     {
-        lcd_1.clear();
         lcd_1.setCursor(4, 0);
         lcd_1.print("Errado!");
         delay(400);
@@ -648,22 +685,28 @@ void chamada(const char *resp, const char *resposta)
     }
 }
 
+// Verifica se o botão foi pressionado
 bool verificarResposta()
 {
     return digitalRead(sim) == LOW || digitalRead(nao) == LOW;
 }
 
+// Perguntas da fase 2
 void perguntas()
 {
+    // Número max de perguntas
     int a = 5;
+    // Pergunta atual
     int per = 0;
     for (int i = 0; i < a; i++)
     {
+        // Indice da pergunta e resposta
         int s = sorteados[i];
         const char *quest = banco[s];
         const char *resposta = respostas[s];
         lcd_1.clear();
         lcd_1.setCursor(2, 0);
+        // Exibe o número da pergunta
         per++;
         sprintf(buffer, "Pergunta: %d ", per);
         lcd_1.print(buffer);
@@ -671,15 +714,18 @@ void perguntas()
         lcd_1.print(" de 5 ");
         delay(2000);
         lcd_1.clear();
+        // Exibe a pergunta
         exibir(quest);
         delay(500);
         lcd_1.clear();
         lcd_1.setCursor(3, 1);
         lcd_1.print("SIM ou NAO");
         delay(300);
+        // Verificador
         bool respostaRecebida = false;
         int seg = millis();
         int total = 10000;
+        // Enquanto a resposta não for recebida
         while (!respostaRecebida)
         {
             int resto = total - (millis() - seg);
@@ -708,19 +754,19 @@ void perguntas()
                 chamada(resp, resposta);
                 break;
             }
-            // a musica de tempo esgotando toca quando faltar 5 segundos
-            // Porém isso paralisa completamente o código
+            // Tempo esgotou
             if (resto <= 0)
             {
                 lcd_1.clear();
                 lcd_1.setCursor(0, 0);
                 lcd_1.print("Tempo esgotado!");
+                // Se o tempo acabar, o jogador perde uma vida
                 if (chance == 1)
                 {
                     chance = 0;
                     lcd_1.setCursor(4, 1);
                     lcd_1.print("Vidas: 1");
-                    delay(1000);
+                    delay(700);
                     lcd_1.setCursor(4, 1);
                     lcd_1.print("Vidas: 0");
                     musica(2);
@@ -729,6 +775,7 @@ void perguntas()
                     a++;
                     break;
                 }
+                // Se ele já gastou a unica vida, perde o jogo
                 else
                 {
                     lcd_1.clear();
@@ -742,6 +789,7 @@ void perguntas()
     }
 }
 
+// Fase 2
 void fase2()
 {
     lcd_1.clear();
@@ -756,9 +804,10 @@ void fase2()
 
 void fase3()
 {
+    // LCD não suporta caracteres especiais
     lcd_1.clear();
     lcd_1.setCursor(1, 0);
-    lcd_1.print("PERGUNTA FINAL");
+    lcd_1.print("PERGUNTA FINAL!");
     delay(2000);
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
@@ -770,9 +819,10 @@ void fase3()
     lcd_1.setCursor(3, 1);
     lcd_1.print("SIM ou NAO");
     delay(300);
+    // Verificador
     bool respostaRecebida = false;
     int seg = millis();
-    int total = 15000;
+    int total = 10000;
     while (!respostaRecebida)
     {
         int resto = total - (millis() - seg);
@@ -803,10 +853,12 @@ void fase3()
             chamada(resp, resposta);
             break;
         }
+        // Tempo esgotou
         if (resto <= 0)
         {
+            // Resetando
             lcd_1.clear();
-            lcd_1.setCursor(3, 0);
+            lcd_1.setCursor(0, 0);
             lcd_1.print("Tempo esgotado!");
             delay(700);
 
@@ -818,16 +870,19 @@ void fase3()
         }
     }
 }
+
 // Inicia ou reinicia o jogo
 void reinicia()
 {
     lcd_1.clear();
     if (jogo == 0)
     {
+        // Inicia o jogo
         jogo = 1;
     }
     else
     {
+        // Reinicia o jogo
         digitalWrite(vermelho, LOW);
         digitalWrite(verde, LOW);
         lcd_1.setCursor(0, 0);
@@ -862,12 +917,15 @@ void loop()
 {
     // Botão de início
     int btnInicio = digitalRead(inicio);
+    // Testando as fases
+    //passei = 1;
     if (jogo == 0)
     {
         lcd_1.setCursor(3, 0);
         lcd_1.print("Bem-vindo.");
         lcd_1.setCursor(2, 1);
         lcd_1.print("Pressione GO!");
+        // Se o botão for pressionado, inicia o jogo
     }
     if (jogo == 1)
     {
