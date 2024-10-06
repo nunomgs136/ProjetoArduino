@@ -632,22 +632,26 @@ void loop()
 
 
 https://github.com/user-attachments/assets/7d6d45d2-77e6-4258-bb79-4799cc79803c
+
 Neste vídeo é mostrado quando o jogador inicia o jogo e erra na primeira fase, resultando na volta ao início do jogo. 
 
 
 https://github.com/user-attachments/assets/229a5040-8393-409b-99ff-ffb10c348d3d
+
 Neste caso, o jogador aperta o botão de reiniciar o jogo, assim automaticamente o levando de volta para o início do jogo. 
 
 
 
 
 https://github.com/user-attachments/assets/d44a117a-ffa4-46bb-aba9-97e3d11b597b
+
 Neste exemplo, o jogador consegue vencer a primeira fase, assim sendo tocada a música de vitória e a transição para a segunda fase. 
 
 
 
 
 https://github.com/user-attachments/assets/0c9b8d5d-5c73-440e-a589-c81061e13772
+
 Neste caso, é mostrado o que acontece quando o jogador pula uma questão, assim começando do mesmo lugar, com uma pergunta diferente. 
 
 
@@ -664,6 +668,7 @@ Neste vídeo, o jogador consegue com sucesso acertar todas as questões e é lev
 
 
 https://github.com/user-attachments/assets/085c4318-ae6f-43ed-a3db-09eb7e620ee8
+
 Neste exemplo, o jogador erra a pergunta final, causando a sua derrota, acompanhada de uma música e o Arduino é reiniciado. 
 
 
