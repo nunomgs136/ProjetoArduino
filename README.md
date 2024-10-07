@@ -10,13 +10,21 @@ Ademais se tem a terceira fase. Nesta fase, o jogador terá que responder uma pe
 
 ## Metodologia:
 Neste projeto, foram utilizados os seguintes materiais:
+
 ■Arduino UNO
+
 ■1 LED vermelho
+
 ■1 LED verde
+
 ■3 botões 
+
 ■ 2 resistores de 300 ohm
+
  ■1 resistor de 200 ohm
+ 
  ■1 Buzzer
+ 
 ■Display LCD 16x2
 
 ## Métodos: 
